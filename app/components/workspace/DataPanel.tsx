@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { AlertCircle, CheckCircle2, Table2 } from "lucide-react";
+import DatasetTableSection from "@/app/components/DatasetTableSection";
+import QueryResultView, { QueryPreviewPanel } from "@/app/components/QueryResultView";
 import {
     DATASET_META,
     type DatasetId,
@@ -54,7 +55,6 @@ export default function DataPanel({
 }: Props) {
     const meta = DATASET_META[datasetId];
     const rows = rowsProp ?? getDatasetRows(datasetId);
-    const cols = meta.columns;
     const [internalTab, setInternalTab] = useState<Tab>("dataset");
     const isLearning = mode === "learning";
     const tab: Tab = isLearning ? learningTabToPanelTab(activeLearningTab) : internalTab;
@@ -69,12 +69,6 @@ export default function DataPanel({
     const hasPreview =
         runResult?.preview &&
         (runResult.kind === "update" || runResult.kind === "delete");
-
-    const emptyResult =
-        runResult?.ok &&
-        runResult.kind === "select" &&
-        runResult.rows &&
-        runResult.rows.length === 0;
 
     const tabs: { id: Tab; label: string }[] = isLearning
         ? [
@@ -142,103 +136,20 @@ export default function DataPanel({
                 )}
 
                 {tab === "dataset" && (
-                    <>
-                        <p className="mb-2 flex items-center gap-2 text-xs text-slate-500 dark:text-zinc-500">
-                            <Table2 className="h-3.5 w-3.5" />
-                            {vi.data.tableName.replace("employees", meta.tableName)}
-                        </p>
-                        <p className="mb-2 text-xs text-slate-400 dark:text-zinc-600">
-                            {meta.description}
-                        </p>
-                        <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-zinc-800">
-                            <table className="w-full min-w-[400px] text-left font-mono text-[10px]">
-                                <thead>
-                                    <tr className="bg-slate-100 text-slate-600 dark:bg-zinc-900 dark:text-zinc-500">
-                                        {cols.map((c) => (
-                                            <th key={c} className="px-2 py-1.5">
-                                                {c}
-                                            </th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody className="text-slate-800 dark:text-zinc-300">
-                                    {rows.map((row, i) => (
-                                        <tr
-                                            key={String(row.id ?? i)}
-                                            className="border-t border-slate-200 dark:border-zinc-800/80"
-                                        >
-                                            {cols.map((c) => (
-                                                <td key={c} className="px-2 py-1">
-                                                    {String(row[c] ?? "")}
-                                                </td>
-                                            ))}
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </>
+                    <DatasetTableSection
+                        datasetId={datasetId}
+                        rows={rows}
+                        title={`Bảng ${meta.tableName}`}
+                        description={meta.description}
+                    />
                 )}
 
                 {tab === "result" && (
-                    <div>
-                        {submitOk === true && (
-                            <p className="mb-2 flex items-center gap-2 text-xs text-emerald-600 dark:text-emerald-400">
-                                <CheckCircle2 className="h-4 w-4" />
-                                {vi.data.submittedOk}
-                            </p>
-                        )}
-                        {submitOk === false && (
-                            <p className="mb-2 flex items-center gap-2 text-xs text-red-600 dark:text-red-400">
-                                <AlertCircle className="h-4 w-4" />
-                                {vi.data.notCorrect}
-                            </p>
-                        )}
-                        {!runResult && (
-                            <p className="text-xs text-slate-400 dark:text-zinc-600">
-                                {vi.data.runOrSubmit}
-                            </p>
-                        )}
-                        {runResult && !runResult.ok && (
-                            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-800 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-200">
-                                <p>{vi.data.runError}</p>
-                                <p className="mt-1">{runResult.message}</p>
-                            </div>
-                        )}
-                        {runResult?.ok && emptyResult && (
-                            <p className="rounded-lg border border-slate-200 bg-slate-100 p-3 text-xs text-slate-600 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400">
-                                {vi.data.emptyResult}
-                            </p>
-                        )}
-                        {runResult?.ok && !emptyResult && (
-                            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-200">
-                                <p>{runResult.message}</p>
-                                {runResult.rows && runResult.rows.length > 0 && (
-                                    <pre className="scrollbar-none mt-2 max-h-48 overflow-auto font-mono text-[10px] text-slate-700 dark:text-zinc-300">
-                                        {JSON.stringify(runResult.rows, null, 2)}
-                                    </pre>
-                                )}
-                            </div>
-                        )}
-                    </div>
+                    <QueryResultView runResult={runResult} submitOk={submitOk} />
                 )}
 
-                {tab === "preview" && runResult?.preview && (
-                    <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/20 dark:text-amber-200">
-                        <p className="font-medium">
-                            {runResult.kind === "update"
-                                ? vi.data.updatePreviewHint
-                                : vi.data.deletePreviewHint}
-                        </p>
-                        <p className="mt-1 text-slate-600 dark:text-zinc-400">
-                            {vi.data.notPermanent}
-                        </p>
-                        {runResult.preview.rows.map((r) => (
-                            <p key={r.id} className="mt-1 font-mono text-[10px]">
-                                #{r.id} {r.name} · {r.department} · {r.status}
-                            </p>
-                        ))}
-                    </div>
+                {tab === "preview" && runResult && (
+                    <QueryPreviewPanel runResult={runResult} />
                 )}
 
                 {tab === "summary" && showComparison && (

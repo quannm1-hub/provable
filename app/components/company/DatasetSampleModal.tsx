@@ -1,6 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
+import DataTable from "@/app/components/DataTable";
 import type { CompanyDatasetMeta } from "@/lib/company-datasets";
 import { getDatasetPreviewRows } from "@/lib/company-datasets";
 
@@ -14,7 +15,6 @@ export default function DatasetSampleModal({ open, onClose, meta }: Props) {
     if (!open || !meta) return null;
 
     const rows = getDatasetPreviewRows(meta.id, 5);
-    const cols = meta.columns;
 
     return (
         <div
@@ -35,7 +35,7 @@ export default function DatasetSampleModal({ open, onClose, meta }: Props) {
                             {meta.description}
                         </p>
                         <p className="mt-1 text-xs text-slate-500 dark:text-zinc-500">
-                            {meta.rowCount} dòng mẫu · {cols.length} cột
+                            {meta.rowCount} dòng mẫu · {meta.columns.length} cột
                         </p>
                     </div>
                     <button
@@ -52,38 +52,13 @@ export default function DatasetSampleModal({ open, onClose, meta }: Props) {
                     Dữ liệu giả lập cho mục đích học tập — không phải dữ liệu thật của doanh nghiệp.
                 </p>
 
-                <div className="mt-4 overflow-x-auto rounded-lg border border-slate-200 dark:border-zinc-700">
-                    <table className="min-w-full text-left text-xs">
-                        <thead className="bg-slate-50 dark:bg-zinc-800/80">
-                            <tr>
-                                {cols.map((c) => (
-                                    <th
-                                        key={c}
-                                        className="whitespace-nowrap px-3 py-2 font-medium text-slate-600 dark:text-zinc-400"
-                                    >
-                                        {c}
-                                    </th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {rows.map((row, i) => (
-                                <tr
-                                    key={i}
-                                    className="border-t border-slate-100 dark:border-zinc-800"
-                                >
-                                    {cols.map((c) => (
-                                        <td
-                                            key={c}
-                                            className="whitespace-nowrap px-3 py-2 text-slate-700 dark:text-zinc-300"
-                                        >
-                                            {String(row[c] ?? "")}
-                                        </td>
-                                    ))}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                <div className="mt-4">
+                    <DataTable
+                        rows={rows as Record<string, unknown>[]}
+                        columns={meta.columns}
+                        variant="default"
+                        maxHeight="max-h-64"
+                    />
                 </div>
             </div>
         </div>

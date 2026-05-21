@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { BookOpen, CheckCircle2, FileText, Sparkles, Table2 } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { BookOpen, FileText, Sparkles } from "lucide-react";
+import DatasetTableSection from "@/app/components/DatasetTableSection";
+import DataTable from "@/app/components/DataTable";
+import QueryResultView from "@/app/components/QueryResultView";
 import {
     DATASET_META,
     type DatasetId,
@@ -16,7 +19,9 @@ import {
     type HighlightTarget,
     type SimulationTab,
 } from "@/lib/simulation-panel";
+import { runSql } from "@/lib/sql-runner";
 import type { RunResult } from "@/lib/types";
+import type { Employee } from "@/lib/types";
 import PreviewModal from "@/app/components/PreviewModal";
 import RelatedKnowledgeSection from "@/app/components/skills/RelatedKnowledgeSection";
 import TaskReadinessIndicator from "@/app/components/skills/TaskReadinessIndicator";
@@ -84,7 +89,6 @@ export default function SimulationDataPanel({
 }: Props) {
     const meta = DATASET_META[datasetId];
     const rows = rowsProp ?? getDatasetRows(datasetId);
-    const cols = meta.columns;
     const [resourcePreview, setResourcePreview] = useState<ResourceItem | null>(null);
     const deliverableRef = useRef<HTMLDivElement>(null);
     const contextRef = useRef<HTMLDivElement>(null);
@@ -121,9 +125,16 @@ export default function SimulationDataPanel({
         ref?.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }, [highlightTarget, activeTab]);
 
-    const hasPreview =
-        runResult?.preview &&
-        (runResult.kind === "update" || runResult.kind === "delete");
+    const modelExpectedResult = useMemo(() => {
+        if (!task?.modelAnswer || task.isBriefing) return null;
+        const q = task.modelAnswer.trim().toLowerCase();
+        if (!q.startsWith("select")) return null;
+        try {
+            return runSql(task.modelAnswer, rows as unknown as Employee[]);
+        } catch {
+            return null;
+        }
+    }, [task, rows]);
 
     return (
         <>
@@ -219,37 +230,10 @@ export default function SimulationDataPanel({
                         <div
                             className={`${highlightSectionClass("dataset", highlightTarget)}`}
                         >
-                            <p className="mb-2 flex items-center gap-2 text-xs text-slate-500 dark:text-zinc-500">
-                                <Table2 className="h-3.5 w-3.5" />
-                                {meta.tableName}
-                            </p>
-                            <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-zinc-800">
-                                <table className="w-full min-w-[400px] text-left font-mono text-[10px]">
-                                    <thead>
-                                        <tr className="bg-slate-100 text-slate-600 dark:bg-zinc-900 dark:text-zinc-500">
-                                            {cols.map((c) => (
-                                                <th key={c} className="px-2 py-1.5">
-                                                    {c}
-                                                </th>
-                                            ))}
-                                        </tr>
-                                    </thead>
-                                    <tbody className="text-slate-800 dark:text-zinc-300">
-                                        {rows.map((row, i) => (
-                                            <tr
-                                                key={String(row.id ?? i)}
-                                                className="border-t border-slate-200 dark:border-zinc-800/80"
-                                            >
-                                                {cols.map((c) => (
-                                                    <td key={c} className="px-2 py-1">
-                                                        {String(row[c] ?? "")}
-                                                    </td>
-                                                ))}
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                            <DatasetTableSection
+                                datasetId={datasetId}
+                                rows={rows}
+                            />
                         </div>
                     )}
 
@@ -257,53 +241,13 @@ export default function SimulationDataPanel({
                         <div
                             className={`text-xs ${highlightSectionClass("result", highlightTarget)} p-2`}
                         >
-                            {submissionStatus === "checking" && (
-                                <p className="mb-2 text-amber-600 dark:text-amber-400">
-                                    {vi.internship.submission.checking}
-                                </p>
-                            )}
-                            {!runResult && submissionStatus !== "checking" && (
-                                <p className="text-slate-400 dark:text-zinc-600">
-                                    {vi.data.runOrSubmit}
-                                </p>
-                            )}
-                            {runResult?.ok && (
-                                <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-200">
-                                    <p>{runResult.message}</p>
-                                    {runResult.rows && runResult.rows.length > 0 && (
-                                        <pre className="scrollbar-none mt-2 max-h-40 overflow-auto font-mono text-[10px]">
-                                            {JSON.stringify(runResult.rows, null, 2)}
-                                        </pre>
-                                    )}
-                                </div>
-                            )}
-                            {runResult && !runResult.ok && (
-                                <p className="text-red-600 dark:text-red-400">
-                                    {runResult.message}
-                                </p>
-                            )}
-                            {hasPreview && runResult?.preview && (
-                                <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-2 dark:border-amber-900/50 dark:bg-amber-950/20">
-                                    <p className="font-medium text-amber-900 dark:text-amber-200">
-                                        {runResult.kind === "update"
-                                            ? vi.data.updatePreviewHint
-                                            : vi.data.deletePreviewHint}
-                                    </p>
-                                    {runResult.preview.rows.map((r) => (
-                                        <p key={r.id} className="mt-1 font-mono text-[10px]">
-                                            #{r.id} {r.name}
-                                        </p>
-                                    ))}
-                                </div>
-                            )}
-                            {submitOk === true && (
-                                <p className="mt-2 flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
-                                    <CheckCircle2 className="h-4 w-4" />
-                                    {vi.data.submittedOk}
-                                </p>
-                            )}
-                            {submitOk === false && (
-                                <p className="mt-2 flex items-center gap-1 text-red-600 dark:text-red-400">
+                            <QueryResultView
+                                runResult={runResult}
+                                submitOk={submitOk}
+                                submissionChecking={submissionStatus === "checking"}
+                            />
+                            {submitOk === false && runResult?.ok && (
+                                <p className="mt-2 text-red-600 dark:text-red-400">
                                     Chưa đạt — xem phản hồi mentor và thử lại.
                                 </p>
                             )}
@@ -354,6 +298,26 @@ export default function SimulationDataPanel({
                                     <pre className="mt-1 overflow-x-auto rounded bg-slate-100 p-2 font-mono text-[10px] text-emerald-800 dark:bg-zinc-950 dark:text-emerald-300">
                                         {yourQuery ?? "—"}
                                     </pre>
+                                    {runResult?.ok &&
+                                        runResult.rows &&
+                                        runResult.rows.length > 0 && (
+                                            <div className="mt-2">
+                                                <p className="mb-1 text-[10px] text-slate-500">
+                                                    Kết quả bài làm
+                                                </p>
+                                                <DataTable
+                                                    rows={
+                                                        runResult.rows as Record<
+                                                            string,
+                                                            unknown
+                                                        >[]
+                                                    }
+                                                    columns={runResult.columns}
+                                                    variant="result"
+                                                    maxHeight="max-h-40"
+                                                />
+                                            </div>
+                                        )}
                                 </div>
                                 <div>
                                     <p className="font-semibold text-slate-700 dark:text-zinc-300">
@@ -364,6 +328,26 @@ export default function SimulationDataPanel({
                                     </pre>
                                 </div>
                             </div>
+                            {modelExpectedResult?.ok &&
+                                modelExpectedResult.rows &&
+                                modelExpectedResult.rows.length > 0 && (
+                                    <div>
+                                        <p className="mb-2 font-semibold text-slate-700 dark:text-zinc-300">
+                                            Kết quả mong đợi
+                                        </p>
+                                        <DataTable
+                                            rows={
+                                                modelExpectedResult.rows as Record<
+                                                    string,
+                                                    unknown
+                                                >[]
+                                            }
+                                            columns={modelExpectedResult.columns}
+                                            variant="result"
+                                            maxHeight="max-h-48"
+                                        />
+                                    </div>
+                                )}
                             {comparison && (
                                 <div className="rounded-lg border border-slate-200 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-950">
                                     <p className="flex items-center gap-1 font-semibold text-slate-800 dark:text-zinc-200">
