@@ -9,10 +9,14 @@ export type UserSubmission = {
     submittedAt: string;
     status: SubmissionStatus;
     score: number;
-    query: string;
-    modelAnswer: string;
     feedback: string;
     skills: string[];
+    type?: "sql" | "document";
+    query?: string;
+    modelAnswer?: string;
+    fileName?: string;
+    matchedSections?: string[];
+    missingSections?: string[];
 };
 
 export const userSubmissions: UserSubmission[] = [
@@ -63,5 +67,24 @@ export const userSubmissions: UserSubmission[] = [
         feedback:
             "Query thiếu WHERE nên có nguy cơ cập nhật toàn bộ bảng. Cần ôn phần UPDATE an toàn.",
         skills: ["UPDATE an toàn", "WHERE"],
+    },
+    {
+        id: "sub-prd-001",
+        programId: "novatech-pm-interview",
+        taskId: "novatech-prd-provable-coach",
+        taskTitle: "Viết PRD cho tính năng Provable Coach",
+        company: "NovaTech",
+        submittedAt: "Hôm qua · 14:20",
+        status: "needs_review",
+        score: 76,
+        type: "document",
+        fileName: "provable-coach-prd-draft.md",
+        feedback:
+            "Tài liệu đã có cấu trúc cơ bản nhưng chưa đủ chi tiết để pass (cần ≥ 90%).",
+        skills: ["PRD Writing", "Product Thinking"],
+        matchedSections: ["Bối cảnh", "Vấn đề cần giải quyết", "Yêu cầu chức năng"],
+        missingSections: ["User flow", "Yêu cầu phi chức năng", "Tiêu chí thành công"],
+        query: "",
+        modelAnswer: "",
     },
 ];

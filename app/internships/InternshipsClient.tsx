@@ -34,7 +34,7 @@ export default function InternshipsClient() {
                     {vi.internship.pageSubtitle}
                 </p>
                 <p className="mt-2 text-xs text-slate-500 dark:text-zinc-600">
-                    {INTERNSHIP_PROGRAMS.length} chương trình mô phỏng · Cốc Cốc chạy đầy đủ
+                    {INTERNSHIP_PROGRAMS.length} chương trình · Cốc Cốc (SQL) & NovaTech (PRD)
                 </p>
 
                 <section className="mt-10">

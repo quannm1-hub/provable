@@ -15,7 +15,7 @@ import {
 import { buildLearnUrl } from "@/lib/skill-navigation";
 import { getLearnModuleForSkill, type SkillId } from "@/lib/sql-skill-map";
 
-type Filter = "all" | SubmissionStatus | "coccoc";
+type Filter = "all" | SubmissionStatus | "coccoc" | "novatech";
 
 const skillToId: Record<string, SkillId | undefined> = {
     SELECT: "sql-select",
@@ -32,6 +32,7 @@ export default function UserSubmissionsPage() {
         return userSubmissions.filter((s) => {
             if (filter === "all") return true;
             if (filter === "coccoc") return s.company.includes("Cốc Cốc");
+            if (filter === "novatech") return s.company.includes("NovaTech");
             return s.status === filter;
         });
     }, [filter]);
@@ -59,6 +60,7 @@ export default function UserSubmissionsPage() {
                             ["passed", "Đạt"],
                             ["needs_review", "Cần xem lại"],
                             ["coccoc", "Cốc Cốc"],
+                            ["novatech", "NovaTech"],
                         ] as const
                     ).map(([id, label]) => (
                         <button
@@ -102,9 +104,15 @@ export default function UserSubmissionsPage() {
                                     {sub.score}
                                 </span>
                             </div>
-                            <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-emerald-300">
-                                {sub.query}
-                            </pre>
+                            {sub.type === "document" ? (
+                                <p className="mt-3 rounded-lg bg-slate-100 px-3 py-2 font-mono text-xs dark:bg-zinc-800">
+                                    📄 {sub.fileName} · Độ trùng khớp {sub.score}%
+                                </p>
+                            ) : (
+                                <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-emerald-300">
+                                    {sub.query}
+                                </pre>
+                            )}
                             <p className="mt-2 text-sm text-slate-600 dark:text-zinc-400 line-clamp-2">
                                 {sub.feedback}
                             </p>
@@ -130,7 +138,13 @@ export default function UserSubmissionsPage() {
                                     </Link>
                                     );
                                 })()}
-                                <Link href={`/internships/coccoc?task=${sub.taskId}`}>
+                                <Link
+                                    href={
+                                        sub.programId === "novatech-pm-interview"
+                                            ? "/internships/novatech-pm"
+                                            : `/internships/coccoc?task=${sub.taskId}`
+                                    }
+                                >
                                     <Button variant="ghost" size="sm">
                                         Làm lại task
                                     </Button>

@@ -6,7 +6,7 @@ export const vi = {
         subtitle:
             "Học kỹ năng qua thực hành có hướng dẫn, sau đó chứng minh năng lực bằng mô phỏng công việc thực tế.",
         prototypeNote:
-            "Bản demo: SQL cơ bản và mô phỏng Cốc Cốc đã có đầy đủ tương tác",
+            "Bản demo: SQL (Cốc Cốc), phỏng vấn PM (NovaTech) đã có đầy đủ tương tác",
     },
     nav: {
         dashboard: "Bảng điều khiển",

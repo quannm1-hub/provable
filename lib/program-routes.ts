@@ -3,6 +3,7 @@ import { INTERNSHIP_PROGRAMS } from "./catalog";
 
 /** Playable program detail / simulation entry URLs */
 export function getProgramHref(programId: string): string | undefined {
+    if (programId === "novatech-pm-interview") return "/internships/novatech-pm";
     if (programId === "coccoc-data-ops") return "/internships/coccoc";
     if (programId === "fpt-data-ops") return "/internships/coccoc";
     return undefined;

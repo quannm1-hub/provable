@@ -13,6 +13,7 @@ export type ChatMessageType =
     | "user_text"
     | "quick_answers";
 
+import type { DocumentUiAction } from "./document-panel";
 import type { LearningUiAction } from "./learning-panel";
 import type { SimulationUiAction } from "./simulation-panel";
 
@@ -20,7 +21,7 @@ export type QuickReply = {
     id: string;
     label: string;
     action: string;
-    uiAction?: SimulationUiAction | LearningUiAction;
+    uiAction?: SimulationUiAction | LearningUiAction | DocumentUiAction;
 };
 
 export type ChatMessage = {

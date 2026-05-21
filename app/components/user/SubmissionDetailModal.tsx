@@ -60,18 +60,57 @@ export default function SubmissionDetailModal({ submission, onClose }: Props) {
                     ))}
                 </div>
                 <div className="mt-4 space-y-3">
-                    <div>
-                        <p className="text-xs font-medium text-slate-500">Truy vấn đã nộp</p>
-                        <pre className="mt-1 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-emerald-300">
-                            {submission.query}
-                        </pre>
-                    </div>
-                    <div>
-                        <p className="text-xs font-medium text-slate-500">Đáp án mẫu</p>
-                        <pre className="mt-1 overflow-x-auto rounded-lg bg-slate-800 p-3 text-xs text-slate-200">
-                            {submission.modelAnswer}
-                        </pre>
-                    </div>
+                    {submission.type === "document" ? (
+                        <>
+                            <div>
+                                <p className="text-xs font-medium text-slate-500">File đã nộp</p>
+                                <p className="mt-1 font-mono text-sm text-slate-800 dark:text-zinc-200">
+                                    {submission.fileName ?? "—"}
+                                </p>
+                                <p className="mt-1 text-xs text-slate-500">
+                                    Độ trùng khớp: {submission.score}%
+                                </p>
+                            </div>
+                            {submission.matchedSections && submission.matchedSections.length > 0 && (
+                                <div>
+                                    <p className="text-xs font-medium text-slate-500">
+                                        Phần đã khớp
+                                    </p>
+                                    <p className="mt-1 text-sm">
+                                        {submission.matchedSections.join(" · ")}
+                                    </p>
+                                </div>
+                            )}
+                            {submission.missingSections &&
+                                submission.missingSections.length > 0 && (
+                                    <div>
+                                        <p className="text-xs font-medium text-slate-500">
+                                            Phần còn thiếu
+                                        </p>
+                                        <p className="mt-1 text-sm text-amber-800 dark:text-amber-300">
+                                            {submission.missingSections.join(" · ")}
+                                        </p>
+                                    </div>
+                                )}
+                        </>
+                    ) : (
+                        <>
+                            <div>
+                                <p className="text-xs font-medium text-slate-500">
+                                    Truy vấn đã nộp
+                                </p>
+                                <pre className="mt-1 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-emerald-300">
+                                    {submission.query}
+                                </pre>
+                            </div>
+                            <div>
+                                <p className="text-xs font-medium text-slate-500">Đáp án mẫu</p>
+                                <pre className="mt-1 overflow-x-auto rounded-lg bg-slate-800 p-3 text-xs text-slate-200">
+                                    {submission.modelAnswer}
+                                </pre>
+                            </div>
+                        </>
+                    )}
                     <div className="rounded-lg border border-amber-200 bg-amber-50/80 p-3 text-sm text-amber-900 dark:border-amber-900/40 dark:bg-amber-950/30 dark:text-amber-200">
                         <p className="text-xs font-medium">Phản hồi mentor</p>
                         <p className="mt-1">{submission.feedback}</p>

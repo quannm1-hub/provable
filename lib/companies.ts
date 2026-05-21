@@ -29,6 +29,41 @@ export type CompanyProfile = {
 
 export const COMPANIES: CompanyProfile[] = [
     {
+        id: "novatech",
+        name: "NovaTech",
+        logoInitials: "NT",
+        industry: "Công nghệ · Nền tảng học tập",
+        size: "200+ nhân sự",
+        location: "TP.HCM · Việt Nam",
+        shortDescription:
+            "Mô phỏng phỏng vấn và thực tập sản phẩm — viết PRD, phân tích yêu cầu và làm việc với team Product Platform.",
+        longDescription:
+            "NovaTech xây dựng Provable — nền tảng học kỹ năng và mô phỏng công việc. Trong mô phỏng PM, bạn hoàn thiện tài liệu PRD cho tính năng Provable Coach dựa trên brief thực tế.",
+        mission: "Giúp người học chứng minh năng lực qua task giống công việc thật.",
+        businessContext:
+            "Team Product Platform cần PRD rõ ràng trước khi Design và Engineering triển khai Provable Coach.",
+        teams: [
+            {
+                name: "Product Platform Team",
+                description: "Định nghĩa yêu cầu sản phẩm cho học tập và mô phỏng.",
+            },
+            {
+                name: "Design & Engineering",
+                description: "Triển khai trải nghiệm coach, panel và luồng học.",
+            },
+        ],
+        datasets: [],
+        skills: [
+            "Product Thinking",
+            "PRD Writing",
+            "Requirement Analysis",
+            "User Flow",
+        ],
+        availablePrograms: ["novatech-pm-interview"],
+        values: ["Rõ ràng", "Lấy người học làm trung tâm", "Đo lường được"],
+        status: "available",
+    },
+    {
         id: "fpt-software",
         name: "FPT Software",
         logoInitials: "FPT",
@@ -145,6 +180,7 @@ export function companyProfileHref(companyId: string, query?: Record<string, str
 
 /** Map program company display name → company id */
 export const COMPANY_ID_BY_NAME: Record<string, string> = {
+    NovaTech: "novatech",
     "FPT Software": "fpt-software",
     VNG: "vng",
     "Cốc Cốc": "coccoc",

@@ -176,6 +176,37 @@ export const LEARNING_TOPICS: LearningTopic[] = [
 
 export const INTERNSHIP_PROGRAMS: InternshipProgram[] = [
     {
+        id: "novatech-pm-interview",
+        companyId: "novatech",
+        title: "Mô phỏng phỏng vấn Associate Product Manager",
+        programTitleEn: "Associate Product Manager Interview Simulation",
+        company: "NovaTech",
+        initials: "NT",
+        role: "Associate Product Manager",
+        description:
+            "Hoàn thành một PRD cho tính năng Provable Coach dựa trên brief sản phẩm — tải template, upload và nhận đánh giá mock.",
+        dataset: "document",
+        skills: [
+            "Product Thinking",
+            "PRD Writing",
+            "Requirement Analysis",
+            "User Flow",
+            "Success Metrics",
+        ],
+        estimatedTime: "30-45 phút",
+        difficulty: "Cơ bản",
+        taskCount: 1,
+        format: "Tự học theo tốc độ cá nhân",
+        category: "business",
+        status: "available",
+        href: "/internships/novatech-pm",
+        previewTasks: [
+            "Đọc product brief",
+            "Tải template PRD",
+            "Upload & chấm tài liệu",
+        ],
+    },
+    {
         id: "coccoc-data-ops",
         companyId: "coccoc",
         title: "Thực tập ảo Data Operations",
