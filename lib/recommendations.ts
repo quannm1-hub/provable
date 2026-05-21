@@ -25,7 +25,7 @@ export function getDashboardRecommendations(): Recommendation[] {
         if (r.percent < 50) {
             recs.push({
                 id: "dash-and-or",
-                message: `Ôn AND / OR để làm tốt task "${eng.title}" trong NovaTech.`,
+                message: `Ôn AND / OR để làm tốt task "${eng.title}" trong Cốc Cốc.`,
                 href: buildLearnUrl("and-or"),
                 actionLabel: "Ôn AND / OR",
             });
@@ -38,7 +38,7 @@ export function getDashboardRecommendations(): Recommendation[] {
             recs.push({
                 id: "dash-inspect-ready",
                 message: `Bạn đã sẵn sàng cho task "${inspect.title}".`,
-                href: "/internships/novatech",
+                href: "/internships/coccoc",
                 actionLabel: "Bắt đầu mô phỏng",
             });
         }
@@ -48,7 +48,7 @@ export function getDashboardRecommendations(): Recommendation[] {
         recs.push({
             id: "dash-update",
             message:
-                "UPDATE an toàn còn yếu — nên học trước khi làm task cập nhật dữ liệu NovaTech.",
+                "UPDATE an toàn còn yếu — nên học trước khi làm task cập nhật dữ liệu tại Cốc Cốc.",
             href: buildLearnUrl("update-safety"),
             actionLabel: "Học UPDATE an toàn",
         });
@@ -57,9 +57,9 @@ export function getDashboardRecommendations(): Recommendation[] {
     if (selectProg.progress >= 100) {
         recs.push({
             id: "dash-select-done",
-            message: "Bạn đã học SELECT. Hãy thử task Kiểm tra dữ liệu nhân sự trong NovaTech.",
-            href: "/internships/novatech",
-            actionLabel: "Xem NovaTech",
+            message: "Bạn đã học SELECT. Hãy thử task Kiểm tra dữ liệu nhân sự trong Cốc Cốc.",
+            href: "/internships/coccoc",
+            actionLabel: "Xem Cốc Cốc",
         });
     }
     return recs.slice(0, 4);
@@ -124,7 +124,7 @@ export function getFailureRecommendation(
                 }
             }
             return {
-                message: "Hãy đối chiếu lại yêu cầu nghiệp vụ trong tab Brief.",
+                message: "Hãy đối chiếu lại yêu cầu nghiệp vụ trong tab Tổng quan task.",
             };
         }
     }

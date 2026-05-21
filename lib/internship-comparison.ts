@@ -23,6 +23,6 @@ export function getModelComparison(taskId: string): ModelComparison | null {
     return COMPARISONS[taskId] ?? {
         good: "Truy vấn của bạn đáp ứng đúng yêu cầu task.",
         improve: "So sánh thêm với đáp án mẫu để thấy chi tiết tối ưu.",
-        whyModel: "Đáp án mẫu phản ánh cách team NovaTech xử lý task tương tự.",
+        whyModel: "Đáp án mẫu phản ánh cách team Cốc Cốc xử lý task tương tự.",
     };
 }

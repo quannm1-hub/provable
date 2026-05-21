@@ -25,7 +25,7 @@ export type SimulationUiAction = {
 };
 
 export const SIMULATION_TAB_LABELS: Record<SimulationTab, string> = {
-    brief: "Brief",
+    brief: "Tổng quan task",
     data: "Dữ liệu",
     result: "Kết quả",
     resources: "Tài nguyên",

@@ -11,9 +11,9 @@ import {
 import type { ValidationResult } from "./types";
 
 export const INTERNSHIP_META = {
-    programTitle: "Thực tập ảo Data Operations tại NovaTech",
+    programTitle: "Thực tập ảo Data Operations tại Cốc Cốc",
     featureName: "Mô phỏng thực tập doanh nghiệp",
-    company: "NovaTech",
+    company: "Cốc Cốc",
     role: "Thực tập sinh Data Operations",
     roleSubtitle: "Junior Data Operations Intern",
     department: "People Operations",
@@ -27,7 +27,7 @@ export const INTERNSHIP_META = {
     disclaimer:
         "Mô phỏng tự học — không phải thực tập hay việc làm thật. Luyện task giống công việc và đối chiếu với đáp án mẫu.",
     intro:
-        "Chào mừng đến chương trình mô phỏng Data Operations tại NovaTech. Đây là brief từ quản lý của bạn: team People Operations cần bạn hỗ trợ rà soát dữ liệu nhân sự trước báo cáo hàng tháng. Bạn cần nộp từng truy vấn SQL đáp ứng yêu cầu nghiệp vụ — sau khi nộp đúng, bạn sẽ mở khóa đáp án mẫu để so sánh.",
+        "Chào mừng đến chương trình mô phỏng Data Operations tại Cốc Cốc. Đây là brief từ quản lý của bạn: team People Operations cần bạn hỗ trợ rà soát dữ liệu nhân sự trước báo cáo hàng tháng. Bạn cần nộp từng truy vấn SQL đáp ứng yêu cầu nghiệp vụ — sau khi nộp đúng, bạn sẽ mở khóa đáp án mẫu để so sánh.",
     skills: [
         "Đọc dữ liệu dạng bảng",
         "Chọn cột liên quan",
@@ -71,7 +71,7 @@ export type InternshipTask = {
 };
 
 export const PROGRESS_STEPS = [
-    "Brief",
+    "Tổng quan",
     "Kiểm tra",
     "Lọc",
     "Lương",

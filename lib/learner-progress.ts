@@ -20,7 +20,7 @@ export const MOCK_LEARNER_PROGRESS = {
     recentActivity: [
         "Đã hoàn thành SELECT cơ bản",
         "Đã luyện WHERE với bảng employees",
-        "Đã xem trước mô phỏng BrightHire",
+        "Đã xem trước mô phỏng VNG",
         "Đã đạt badge SQL Starter",
     ],
     recommendedNext: dashRecs.map((r) => ({

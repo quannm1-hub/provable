@@ -146,7 +146,7 @@ export function buildInternshipReturnUrl(ctx: InternshipReturnContext): string {
     const params = new URLSearchParams({
         task: ctx.taskId,
     });
-    return `/internships/novatech?${params.toString()}`;
+    return `/internships/coccoc?${params.toString()}`;
 }
 
 export function parseReturnFromSearchParams(
@@ -155,7 +155,7 @@ export function parseReturnFromSearchParams(
     if (searchParams.get("from") !== "internship") return null;
     const taskId = searchParams.get("taskId");
     const taskTitle = searchParams.get("taskTitle");
-    const internshipId = searchParams.get("internshipId") ?? "novatech-data-ops";
+    const internshipId = searchParams.get("internshipId") ?? "coccoc-data-ops";
     if (!taskId || !taskTitle) return null;
     const skillId = searchParams.get("skillId") as SkillId | null;
     return {
@@ -185,8 +185,8 @@ export function goToLearnModule(
 
 export function goToInternshipTask(internshipId: string, taskId: string) {
     clearReturnContext();
-    if (internshipId === "novatech-data-ops") {
-        window.location.href = `/internships/novatech?task=${taskId}`;
+    if (internshipId === "coccoc-data-ops" || internshipId === "fpt-data-ops") {
+        window.location.href = `/internships/coccoc?task=${taskId}`;
     } else {
         window.location.href = "/internships";
     }

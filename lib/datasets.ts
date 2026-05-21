@@ -120,7 +120,3 @@ export function getDatasetRows(id: DatasetId): Record<string, string | number>[]
             return [];
     }
 }
-
-export function cloneDataset(id: DatasetId): Record<string, string | number>[] {
-    return getDatasetRows(id);
-}

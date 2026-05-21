@@ -67,10 +67,24 @@ export type SimulationTask = {
     validate: (query: string) => ValidationResult;
 };
 
+export type QueryResultType =
+    | "select_result"
+    | "empty_result"
+    | "validation_error"
+    | "danger_warning"
+    | "update_preview"
+    | "delete_preview";
+
 export type RunResult = {
     ok: boolean;
     kind: "select" | "update" | "delete" | "error";
+    resultType?: QueryResultType;
     message: string;
     rows?: Record<string, string | number>[];
+    columns?: string[];
+    rowCount?: number;
     preview?: { action: string; rows: Employee[] };
+    affectedRows?: Record<string, string | number>[];
+    warnings?: string[];
+    errors?: string[];
 };

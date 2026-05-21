@@ -6,7 +6,7 @@ export const vi = {
         subtitle:
             "Học kỹ năng qua thực hành có hướng dẫn, sau đó chứng minh năng lực bằng mô phỏng công việc thực tế.",
         prototypeNote:
-            "Bản demo: SQL cơ bản và thực tập NovaTech đã có đầy đủ tương tác",
+            "Bản demo: SQL cơ bản và mô phỏng Cốc Cốc đã có đầy đủ tương tác",
     },
     nav: {
         dashboard: "Bảng điều khiển",
@@ -49,7 +49,7 @@ export const vi = {
         pageSubtitle:
             "Xây nền tảng qua bài học tương tác, thực hành có hướng dẫn và phản hồi tức thì. Provable Coach điều chỉnh theo mức độ hiểu của bạn.",
         startLearning: "Bắt đầu học",
-        coachName: "Provable Coach",
+        coachName: "Huấn luyện viên Provable",
         coachSubtitle: "SQL cơ bản · Lộ trình học",
         moduleLabel: (index: number, total: number, title: string) =>
             `Phần ${index} / ${total}: ${title}`,
@@ -104,8 +104,8 @@ export const vi = {
         selfPaced: "Tự học theo tốc độ cá nhân",
         noApplication: "Không cần ứng tuyển",
         tasksLabel: (n: number) => `${n} task`,
-        mentorName: "Mentor NovaTech",
-        mentorSubtitle: "People Operations · Thực tập ảo",
+        mentorName: "Mentor Cốc Cốc",
+        mentorSubtitle: "People Operations · Mô phỏng thực tập",
         taskBriefing: "Task 1 / 6: Giới thiệu dự án",
         taskLabel: (step: number, title: string) => `Task ${step} / 6: ${title}`,
         unlockSql: "Hoàn thành phần giới thiệu trong chat mentor để mở các task SQL.",
@@ -124,9 +124,9 @@ export const vi = {
         dangerousDelete:
             "Truy vấn nguy hiểm. DELETE không có WHERE có thể xóa toàn bộ dữ liệu trong bảng.",
         intro: {
-            title: "Thực tập ảo Data Operations tại NovaTech",
+            title: "Thực tập ảo Data Operations tại Cốc Cốc",
             welcome:
-                "Chào mừng bạn đến với chương trình thực tập ảo Data Operations tại NovaTech. Bạn sẽ đóng vai thực tập sinh trong team People Operations và hỗ trợ chuẩn bị dữ liệu cho báo cáo nhân sự hàng tháng.",
+                "Chào mừng bạn đến mô phỏng Data Operations tại Cốc Cốc. Bạn sẽ đóng vai thực tập sinh trong team People Operations và hỗ trợ chuẩn bị dữ liệu cho báo cáo nhân sự hàng tháng.",
             prerequisite:
                 "Mô phỏng này sử dụng các kiến thức SQL cơ bản như SELECT, WHERE, AND / OR, UPDATE và DELETE. Nếu bạn chưa quen, bạn có thể học phần SQL cơ bản trước.",
             disclaimer:
@@ -143,7 +143,7 @@ export const vi = {
         complete: {
             title: "Hoàn thành mô phỏng công việc",
             subtitle:
-                "Bạn đã hoàn thành chương trình Thực tập ảo Data Operations tại NovaTech.",
+                "Bạn đã hoàn thành chương trình Thực tập ảo Data Operations tại Cốc Cốc.",
             certificateLabel: "Chứng nhận mô phỏng",
             learner: "Người học",
             learnerName: "Demo User",
@@ -153,7 +153,7 @@ export const vi = {
             skills: "Kỹ năng",
             cvHint: "Gợi ý mô tả trên CV",
             cvText:
-                "Hoàn thành mô phỏng Data Operations tại NovaTech trên Provable, thực hành các task SQL như kiểm tra dữ liệu, lọc dữ liệu theo yêu cầu nghiệp vụ và viết truy vấn cập nhật/xóa an toàn.",
+                "Hoàn thành mô phỏng Data Operations tại Cốc Cốc trên Provable, thực hành các task SQL như kiểm tra dữ liệu, lọc dữ liệu theo yêu cầu nghiệp vụ và viết truy vấn cập nhật/xóa an toàn.",
             reviewTasks: "Xem lại task",
             exploreMore: "Khám phá mô phỏng khác",
             sqlScore: "SQL cơ bản",
@@ -204,9 +204,6 @@ export const vi = {
         solid: "Đã vững",
         learn: "Học",
     },
-    chat: {
-        chooseResponse: "Chọn câu trả lời",
-    },
     sql: {
         editor: "Trình soạn SQL",
         placeholder: "-- Viết SQL tại đây",
@@ -217,6 +214,12 @@ export const vi = {
         reset: "Làm lại",
         showHint: "Hiện gợi ý",
         hint: "Gợi ý",
+        emptyEditor: "Hãy nhập truy vấn SQL trước khi chạy.",
+        submitNeedsExercise: "Hoàn thành phần lý thuyết trước khi nộp bài.",
+    },
+    chat: {
+        chooseResponse: "Chọn câu trả lời",
+        mentorThinking: "Đang soạn phản hồi…",
     },
     data: {
         table: "Bảng dữ liệu",
@@ -230,6 +233,10 @@ export const vi = {
         submittedOk: "Đã nộp bài — câu trả lời được chấp nhận",
         notCorrect: "Chưa đúng — xem phản hồi từ coach",
         runOrSubmit: "Chạy SQL hoặc nộp bài để xem kết quả tại đây.",
+        noResultYet: "Chưa có kết quả truy vấn",
+        runToSeeResult: "Hãy chạy SQL để xem kết quả trong bảng bên dưới.",
+        queryNeedsFix: "Truy vấn cần chỉnh sửa",
+        datasetLabel: "Bảng dữ liệu",
         rowsReturned: (n: number) => `Trả về ${n} dòng.`,
         emptyResult: "Không có dòng nào khớp với truy vấn hiện tại.",
         runError: "Chưa thể chạy truy vấn. Hãy kiểm tra lại cú pháp hoặc điều kiện.",

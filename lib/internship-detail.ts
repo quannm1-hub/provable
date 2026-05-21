@@ -3,10 +3,11 @@ import { getSkill } from "./sql-skill-map";
 import type { SkillId } from "./sql-skill-map";
 import { INTERNSHIP_META, internshipTasks, PROGRESS_STEPS } from "./internship";
 
-export const NOVATECH_PROGRAM = {
-    id: "novatech-data-ops",
-    company: "NovaTech",
-    initials: "NT",
+/** Playable SQL internship program (Cốc Cốc). */
+export const COCCOC_PROGRAM = {
+    id: "coccoc-data-ops",
+    company: "Cốc Cốc",
+    initials: "CC",
     programTitleEn: "Data Operations Virtual Internship",
     programTitle: "Thực tập ảo Data Operations",
     role: "Thực tập sinh Data Operations",
@@ -22,6 +23,9 @@ export const NOVATECH_PROGRAM = {
     skills: ["SQL", "Data Cleaning", "Query Safety", "Business Reasoning"],
 };
 
+/** @deprecated Use COCCOC_PROGRAM */
+export const NOVATECH_PROGRAM = COCCOC_PROGRAM;
+
 export const PROGRAM_VALUE_PROPS = [
     {
         title: "Tự học theo tốc độ cá nhân",
@@ -29,7 +33,7 @@ export const PROGRAM_VALUE_PROPS = [
     },
     {
         title: "Task mô phỏng công việc thực tế",
-        desc: "Brief, SQL, nộp bài và phản hồi như trong team Data Operations.",
+        desc: "Đọc yêu cầu, viết SQL, nộp bài và nhận phản hồi như trong team Data Operations.",
     },
     {
         title: "So sánh với đáp án mẫu",

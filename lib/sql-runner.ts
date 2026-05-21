@@ -57,61 +57,126 @@ function projectRows(rows: Employee[], cols: string[] | "*"): Record<string, str
     });
 }
 
+function inferColumnsFromRows(rows: Record<string, string | number>[]): string[] {
+    if (rows.length === 0) return [];
+    return Object.keys(rows[0]);
+}
+
+function errorResult(
+    message: string,
+    opts?: { danger?: boolean; errors?: string[]; rowCount?: number },
+): RunResult {
+    return {
+        ok: false,
+        kind: "error",
+        resultType: opts?.danger ? "danger_warning" : "validation_error",
+        message,
+        rows: [],
+        rowCount: opts?.rowCount ?? 0,
+        errors: opts?.errors ?? [message],
+        warnings: opts?.danger ? [message] : undefined,
+    };
+}
+
 export function runSql(query: string, data: Employee[] = cloneEmployees()): RunResult {
     const norm = normalizeSql(query);
-    if (!norm) return { ok: false, kind: "error", message: vi.sqlRunner.enterQuery };
+    if (!norm) {
+        return errorResult(vi.sqlRunner.enterQuery);
+    }
 
     if (norm.startsWith("select")) {
         if (!norm.includes("from employees")) {
-            return { ok: false, kind: "error", message: vi.sqlRunner.needFrom };
+            return errorResult(vi.sqlRunner.needFrom, {
+                errors: ["Cần có FROM employees trong truy vấn SELECT."],
+            });
         }
         let rows = [...data];
         const whereMatch = query.match(/where\s+([\s\S]+?)(?:;|$)/i);
         if (whereMatch) rows = filterRows(rows, whereMatch[1]);
         const cols = parseSelectColumns(query);
+        const projected = projectRows(rows, cols);
+        const columns = inferColumnsFromRows(projected);
+
+        if (projected.length === 0) {
+            return {
+                ok: true,
+                kind: "select",
+                resultType: "empty_result",
+                message: vi.data.emptyResult,
+                rows: [],
+                columns,
+                rowCount: 0,
+            };
+        }
+
         return {
             ok: true,
             kind: "select",
-            message: vi.data.rowsReturned(rows.length),
-            rows: projectRows(rows, cols),
+            resultType: "select_result",
+            message: "Query chạy thành công.",
+            rows: projected,
+            columns,
+            rowCount: projected.length,
         };
     }
 
     if (norm.startsWith("update")) {
         if (!norm.includes("where")) {
-            return {
-                ok: false,
-                kind: "error",
-                message: vi.sqlRunner.updateNoWhere,
-            };
+            return errorResult(vi.sqlRunner.updateNoWhere, {
+                danger: true,
+                errors: [
+                    "UPDATE không có WHERE có thể thay đổi toàn bộ bảng.",
+                    "Hãy thêm điều kiện WHERE trước khi chạy.",
+                ],
+                rowCount: data.length,
+            });
         }
         const whereMatch = query.match(/where\s+([\s\S]+?)(?:;|$)/i);
         const affected = whereMatch ? filterRows(data, whereMatch[1]) : [];
+        const affectedRows = projectRows(affected, "*");
+        const columns = inferColumnsFromRows(affectedRows);
+
         return {
             ok: true,
             kind: "update",
+            resultType: "update_preview",
             message: vi.sqlRunner.updatePreview(affected.length),
+            rowCount: affected.length,
+            columns,
+            affectedRows,
             preview: { action: "UPDATE preview", rows: affected },
         };
     }
 
     if (norm.startsWith("delete")) {
         if (!norm.includes("where")) {
-            return {
-                ok: false,
-                kind: "error",
-                message: vi.sqlRunner.deleteNoWhere,
-            };
+            return errorResult(vi.sqlRunner.deleteNoWhere, {
+                danger: true,
+                errors: [
+                    "DELETE không có WHERE có thể xóa toàn bộ bảng.",
+                    "Hãy thêm điều kiện WHERE trước khi chạy.",
+                ],
+                rowCount: data.length,
+            });
         }
         const whereMatch = query.match(/where\s+([\s\S]+?)(?:;|$)/i);
         const affected = whereMatch ? filterRows(data, whereMatch[1]) : [];
+        const affectedRows = projectRows(affected, "*");
+        const columns = inferColumnsFromRows(affectedRows);
+
         return {
             ok: true,
             kind: "delete",
+            resultType: "delete_preview",
             message: vi.sqlRunner.deletePreview(affected.length),
+            rowCount: affected.length,
+            columns,
+            affectedRows,
             preview: { action: "DELETE preview", rows: affected },
         };
     }
 
-    return { ok: false, kind: "error", message: vi.sqlRunner.unsupported };
+    return errorResult(vi.sqlRunner.unsupported, {
+        errors: ["Chỉ hỗ trợ SELECT, UPDATE và DELETE trong bản demo."],
+    });
 }

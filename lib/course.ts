@@ -8,7 +8,7 @@ import {
     checkWhere,
 } from "./sql-validator";
 
-/** Playable modules in demo (full catalog has 10 in sql-modules-catalog.ts) */
+/** Playable modules in demo SQL learning path */
 export const MODULE_COUNT = 5;
 
 export const courseModules: CourseModule[] = [
@@ -308,10 +308,10 @@ export const courseModules: CourseModule[] = [
 ];
 
 export const simulationIntro = {
-    company: "NovaTech",
+    company: "Cốc Cốc",
     role: "Thực tập sinh Data Operations",
     mission:
-        "Bạn gia nhập NovaTech với vai trò thực tập sinh. Quản lý yêu cầu kiểm tra và làm sạch dữ liệu nhân sự trước báo cáo hàng tháng.",
+        "Bạn gia nhập mô phỏng Cốc Cốc với vai trò thực tập sinh. Quản lý yêu cầu kiểm tra và làm sạch dữ liệu nhân sự trước báo cáo hàng tháng.",
 };
 
 export const simulationTasks: SimulationTask[] = [

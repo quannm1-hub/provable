@@ -29,114 +29,98 @@ export type CompanyProfile = {
 
 export const COMPANIES: CompanyProfile[] = [
     {
-        id: "novatech",
-        name: "NovaTech",
-        logoInitials: "NT",
-        industry: "HR Tech / People Operations",
-        size: "250-500 nhân sự",
-        location: "Remote-first · Việt Nam",
+        id: "fpt-software",
+        name: "FPT Software",
+        logoInitials: "FPT",
+        industry: "Phần mềm & Dịch vụ CNTT",
+        size: "10.000+ nhân sự",
+        location: "Hà Nội · TP.HCM · Toàn cầu",
         shortDescription:
-            "NovaTech là một công ty công nghệ giả lập chuyên xây dựng công cụ nội bộ cho quản trị nhân sự và vận hành dữ liệu.",
+            "Mô phỏng môi trường FPT Software — công ty phần mềm lớn tại Việt Nam, nơi team vận hành dữ liệu hỗ trợ báo cáo nội bộ.",
         longDescription:
-            "Trong mô phỏng này, NovaTech đại diện cho một công ty công nghệ đang phát triển nhanh. Team People Operations cần dữ liệu chính xác để chuẩn bị báo cáo nhân sự hàng tháng, theo dõi nhân sự active và đảm bảo các thay đổi dữ liệu được thực hiện an toàn.",
-        mission: "Giúp các team vận hành ra quyết định tốt hơn bằng dữ liệu sạch, rõ ràng và có thể kiểm chứng.",
+            "Trong mô phỏng này, bạn đóng vai thực tập sinh Data Operations tại bối cảnh giống FPT Software. Team People Operations cần dữ liệu nhân sự chính xác để chuẩn bị báo cáo hàng tháng, theo dõi headcount và đảm bảo truy vấn SQL an toàn.",
+        mission: "Mang lại giải pháp công nghệ chất lượng cao, vận hành dựa trên dữ liệu rõ ràng.",
         businessContext:
-            "People Operations tại NovaTech đang chuẩn bị báo cáo nhân sự hàng tháng cho leadership. Người học sẽ đóng vai thực tập sinh Data Operations và hỗ trợ kiểm tra, lọc, cập nhật và chuẩn bị dữ liệu.",
+            "Team vận hành dữ liệu đang chuẩn bị báo cáo nhân sự cho leadership. Người học sẽ kiểm tra, lọc, cập nhật và chuẩn bị dữ liệu bằng SQL.",
         teams: [
             {
                 name: "People Operations",
                 description:
-                    "Phụ trách dữ liệu nhân sự, headcount, trạng thái nhân viên và báo cáo nội bộ.",
+                    "Quản lý dữ liệu nhân sự, headcount và trạng thái nhân viên phục vụ báo cáo nội bộ.",
             },
             {
                 name: "Data Operations",
                 description:
-                    "Hỗ trợ kiểm tra dữ liệu, chuẩn hóa bảng dữ liệu và viết truy vấn phục vụ báo cáo.",
+                    "Kiểm tra chất lượng dữ liệu, chuẩn hóa bảng và viết truy vấn phục vụ báo cáo.",
             },
         ],
         datasets: ["employees"],
         skills: ["SQL", "Data Inspection", "Filtering", "Query Safety", "Business Reasoning"],
-        availablePrograms: ["novatech-data-ops"],
-        values: ["Rõ ràng", "An toàn dữ liệu", "Ra quyết định dựa trên dữ liệu"],
-        status: "available",
+        availablePrograms: [],
+        values: ["Chất lượng", "An toàn dữ liệu", "Học hỏi liên tục"],
+        status: "preview",
     },
     {
-        id: "brighthire",
-        name: "BrightHire",
-        logoInitials: "BH",
-        industry: "Recruiting Analytics",
-        size: "100-250 nhân sự",
-        location: "Hồ Chí Minh · Hybrid",
+        id: "vng",
+        name: "VNG",
+        logoInitials: "VNG",
+        industry: "Công nghệ · Game & Nền tảng số",
+        size: "3.000+ nhân sự",
+        location: "TP.HCM · Việt Nam",
         shortDescription:
-            "BrightHire là công ty giả lập cung cấp giải pháp phân tích phễu tuyển dụng.",
+            "Mô phỏng bối cảnh VNG — tập đoàn công nghệ Việt Nam, tập trung phân tích dữ liệu người dùng và sản phẩm số.",
         longDescription:
-            "BrightHire giúp team tuyển dụng theo dõi nguồn ứng viên, điểm đánh giá và tiến độ qua từng vòng tuyển dụng. Trong mô phỏng, người học phân tích dữ liệu candidate_funnel để tìm ứng viên tiềm năng.",
-        mission: "Giúp doanh nghiệp tuyển dụng tốt hơn bằng dữ liệu ứng viên rõ ràng.",
+            "Trong mô phỏng, team Product Analytics tại VNG cần đọc dữ liệu phễu người dùng và ứng viên nội bộ để hỗ trợ quyết định sản phẩm. Người học luyện SQL với bảng dữ liệu mẫu candidate_funnel.",
+        mission: "Tạo sản phẩm số mang lại trải nghiệm tốt cho người dùng Việt Nam.",
         businessContext:
-            "Team Recruiting Analytics cần xác định ứng viên chất lượng cao và nguồn tuyển dụng hiệu quả.",
+            "Team tuyển dụng & phân tích cần xác định nguồn ứng viên chất lượng và tiến độ qua các vòng phỏng vấn.",
         teams: [
             {
-                name: "Recruiting Analytics",
-                description: "Phân tích dữ liệu ứng viên và hiệu quả nguồn tuyển dụng.",
+                name: "Product Analytics",
+                description: "Phân tích hành vi người dùng và hiệu quả sản phẩm.",
+            },
+            {
+                name: "Talent Analytics",
+                description: "Theo dõi phễu tuyển dụng và chất lượng nguồn ứng viên.",
             },
         ],
         datasets: ["candidate_funnel"],
         skills: ["SQL", "Filtering", "Hiring Funnel", "Analytics"],
-        availablePrograms: ["brighthire-recruiting"],
-        values: ["Minh bạch", "Tối ưu quy trình", "Tập trung vào ứng viên"],
+        availablePrograms: ["vng-talent-analytics"],
+        values: ["Sáng tạo", "Dữ liệu làm căn cứ", "Tốc độ thử nghiệm"],
         status: "preview",
     },
     {
-        id: "cloudcart",
-        name: "CloudCart",
+        id: "coccoc",
+        name: "Cốc Cốc",
         logoInitials: "CC",
-        industry: "E-commerce",
+        industry: "Trình duyệt · Quảng cáo & Tìm kiếm",
         size: "500+ nhân sự",
-        location: "Việt Nam · Đông Nam Á",
+        location: "Hà Nội · Việt Nam",
         shortDescription:
-            "CloudCart là nền tảng thương mại điện tử giả lập với dữ liệu đơn hàng và sản phẩm.",
+            "Mô phỏng bối cảnh Cốc Cốc — công ty công nghệ Việt Nam, luyện SQL với dữ liệu nội bộ và task giống công việc thực tế.",
         longDescription:
-            "CloudCart mô phỏng một doanh nghiệp thương mại điện tử cần phân tích đơn hàng, sản phẩm, tồn kho và doanh thu để hỗ trợ quyết định kinh doanh.",
-        mission: "Giúp cửa hàng online vận hành hiệu quả hơn bằng dữ liệu.",
+            "Trong mô phỏng, bạn đóng vai thực tập sinh Data Operations. Team People Operations cần dữ liệu nhân sự chính xác để chuẩn bị báo cáo hàng tháng — bạn sẽ kiểm tra, lọc và viết truy vấn SQL an toàn.",
+        mission: "Giúp người dùng Việt tìm kiếm và trải nghiệm web tốt hơn.",
         businessContext:
-            "Team E-commerce Analytics cần phân tích đơn hàng completed, sản phẩm hết hàng và đơn hàng giá trị cao.",
+            "Team vận hành dữ liệu đang chuẩn bị báo cáo nhân sự. Người học kiểm tra, lọc và chuẩn bị dữ liệu bằng SQL trước khi nộp cho leadership.",
         teams: [
             {
-                name: "E-commerce Analytics",
-                description: "Phân tích đơn hàng, sản phẩm, tồn kho và hiệu quả kinh doanh.",
+                name: "People Operations",
+                description:
+                    "Quản lý dữ liệu nhân sự, headcount và trạng thái nhân viên phục vụ báo cáo nội bộ.",
             },
-        ],
-        datasets: ["orders", "products"],
-        skills: ["SQL", "Orders", "Products", "Business Metrics"],
-        availablePrograms: ["cloudcart-ecommerce"],
-        values: ["Tốc độ", "Khách hàng", "Tối ưu vận hành"],
-        status: "coming_soon",
-    },
-    {
-        id: "growthlab",
-        name: "GrowthLab",
-        logoInitials: "GL",
-        industry: "Marketing Analytics",
-        size: "50-100 nhân sự",
-        location: "Remote · APAC",
-        shortDescription:
-            "GrowthLab là agency giả lập chuyên phân tích hiệu quả chiến dịch marketing.",
-        longDescription:
-            "GrowthLab giúp khách hàng theo dõi spend, leads và conversions qua nhiều kênh marketing. Trong mô phỏng, người học đánh giá campaign nào đang hoạt động tốt.",
-        mission: "Biến dữ liệu marketing thành quyết định tăng trưởng dễ hiểu.",
-        businessContext:
-            "Team Marketing Performance cần đánh giá campaign active, conversion cao và mức spend theo từng kênh.",
-        teams: [
             {
-                name: "Marketing Performance",
-                description: "Theo dõi hiệu quả campaign, lead generation và conversion.",
+                name: "Data Operations",
+                description:
+                    "Kiểm tra chất lượng dữ liệu, chuẩn hóa bảng và viết truy vấn phục vụ báo cáo.",
             },
         ],
-        datasets: ["marketing_performance"],
-        skills: ["SQL", "Marketing Analytics", "Performance Analysis"],
-        availablePrograms: ["growthlab-marketing"],
-        values: ["Thử nghiệm", "Đo lường", "Tăng trưởng bền vững"],
-        status: "coming_soon",
+        datasets: ["employees"],
+        skills: ["SQL", "Data Inspection", "Filtering", "Query Safety", "Business Reasoning"],
+        availablePrograms: ["coccoc-data-ops"],
+        values: ["Tập trung người dùng Việt", "Đo lường rõ ràng", "Tối ưu chi phí"],
+        status: "available",
     },
 ];
 
@@ -161,11 +145,9 @@ export function companyProfileHref(companyId: string, query?: Record<string, str
 
 /** Map program company display name → company id */
 export const COMPANY_ID_BY_NAME: Record<string, string> = {
-    NovaTech: "novatech",
-    BrightHire: "brighthire",
-    CloudCart: "cloudcart",
-    GrowthLab: "growthlab",
-    DevSync: "devsync",
+    "FPT Software": "fpt-software",
+    VNG: "vng",
+    "Cốc Cốc": "coccoc",
 };
 
 export function getCompanyIdForProgram(program: { company: string; id: string }): string {
