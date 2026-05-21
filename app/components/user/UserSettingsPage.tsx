@@ -19,9 +19,6 @@ export default function UserSettingsPage() {
                         <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
                             Cài đặt
                         </h1>
-                        <p className="text-sm text-amber-700 dark:text-amber-400">
-                            Đây là bản mock giao diện cài đặt. Một số thay đổi chưa được lưu thật.
-                        </p>
                     </div>
                 </div>
 
@@ -47,16 +44,13 @@ export default function UserSettingsPage() {
                     </SettingsSection>
 
                     <SettingsSection title="Thông báo">
-                        <MockField label="Nhắc học hàng ngày" value="Bật (mock)" />
-                        <MockField label="Thông báo task mô phỏng" value="Bật (mock)" />
+                        <MockField label="Nhắc học hàng ngày" value="Bật" />
+                        <MockField label="Thông báo task" value="Bật" />
                     </SettingsSection>
 
-                    <SettingsSection title="Dữ liệu demo">
+                    <SettingsSection title="Tài khoản">
                         <p className="text-sm text-slate-600 dark:text-zinc-400">
                             ID học viên: {mockUser.id}
-                        </p>
-                        <p className="text-xs text-slate-500 mt-1">
-                            Dữ liệu tiến độ, bài nộp và badge là mock cố định cho demo.
                         </p>
                     </SettingsSection>
                 </div>

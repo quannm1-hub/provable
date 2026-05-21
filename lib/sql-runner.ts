@@ -177,6 +177,6 @@ export function runSql(query: string, data: Employee[] = cloneEmployees()): RunR
     }
 
     return errorResult(vi.sqlRunner.unsupported, {
-        errors: ["Chỉ hỗ trợ SELECT, UPDATE và DELETE trong bản demo."],
+        errors: ["Chỉ hỗ trợ SELECT, UPDATE và DELETE trong phiên làm việc này."],
     });
 }

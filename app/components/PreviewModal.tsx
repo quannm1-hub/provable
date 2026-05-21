@@ -28,7 +28,7 @@ export default function PreviewModal({
     tags = [],
     modulesOrTasks = [],
     modulesLabel = "Nội dung dự kiến",
-    footerNote = "Nội dung này đang được phát triển. Chỉ xem trước trong bản demo.",
+    footerNote = "Nội dung này đang được phát triển.",
     primaryAction,
 }: Props) {
     if (!open) return null;

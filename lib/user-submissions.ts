@@ -11,7 +11,19 @@ export type UserSubmission = {
     score: number;
     feedback: string;
     skills: string[];
-    type?: "sql" | "document";
+    type?:
+        | "sql"
+        | "document"
+        | "sql_case"
+        | "text_insight"
+        | "dashboard_upload"
+        | "assessment_review";
+    role?: string;
+    decision?: string;
+    riskFlags?: string[];
+    checksSummary?: string;
+    llmReviewSummary?: string;
+    submissionLabel?: string;
     query?: string;
     modelAnswer?: string;
     fileName?: string;
@@ -86,5 +98,99 @@ export const userSubmissions: UserSubmission[] = [
         missingSections: ["User flow", "Yêu cầu phi chức năng", "Tiêu chí thành công"],
         query: "",
         modelAnswer: "",
+    },
+    {
+        id: "sub-da-sql-001",
+        programId: "novatech-da-retention-interview",
+        taskId: "retention-sql-part",
+        taskTitle: "Retention Case · Data Analyst Intern — SQL",
+        submissionLabel: "Retention Case · Data Analyst Intern",
+        company: "NovaTech",
+        submittedAt: "Hôm nay · 09:15",
+        status: "passed",
+        score: 82,
+        type: "sql_case",
+        query: "SELECT cohort_month, COUNT(*) ... retention D7/D30",
+        modelAnswer: "WITH cohort_users AS (SELECT ...)",
+        feedback: "Query có cấu trúc cohort + retention phù hợp yêu cầu.",
+        skills: ["SQL", "Cohort Analysis", "Retention Analysis"],
+    },
+    {
+        id: "sub-da-insight-001",
+        programId: "novatech-da-retention-interview",
+        taskId: "retention-insight-part",
+        taskTitle: "Retention Case · Insight cho PM",
+        submissionLabel: "Retention Case · Data Analyst Intern",
+        company: "NovaTech",
+        submittedAt: "Hôm nay · 09:42",
+        status: "passed",
+        score: 88,
+        type: "text_insight",
+        query: "",
+        modelAnswer: "",
+        feedback:
+            "Insight kết nối retention, hành vi sớm và first transaction với action onboarding.",
+        skills: ["Insight Storytelling", "Product Analytics"],
+    },
+    {
+        id: "sub-da-dash-001",
+        programId: "novatech-da-retention-interview",
+        taskId: "retention-dashboard-part",
+        taskTitle: "Retention Case · dashboard một trang",
+        submissionLabel: "Retention Case · Data Analyst Intern",
+        company: "NovaTech",
+        submittedAt: "Hôm nay · 10:05",
+        status: "passed",
+        score: 85,
+        type: "dashboard_upload",
+        fileName: "novapay-retention-dashboard-final.png",
+        query: "",
+        modelAnswer: "",
+        feedback:
+            "Dashboard đáp ứng north star và chart retention.",
+        skills: ["Dashboard Communication", "Data Storytelling"],
+    },
+    {
+        id: "sub-coccoc-de-review-001",
+        programId: "coccoc-de-intern-assessment",
+        taskId: "de-intern-package",
+        taskTitle: "Cốc Cốc · DE Intern Assessment",
+        submissionLabel: "Cốc Cốc · DE Intern Assessment",
+        company: "Cốc Cốc",
+        role: "Data Engineering Intern",
+        submittedAt: "Hôm nay · 11:00",
+        status: "passed",
+        score: 92,
+        type: "assessment_review",
+        fileName: "final_complete_pass.zip",
+        decision: "Strong Pass",
+        riskFlags: [],
+        checksSummary: "Format, README, code run, similarity — đạt",
+        llmReviewSummary:
+            "Submission có cấu trúc đầy đủ; rủi ro similarity thấp.",
+        feedback: "Strong Pass. README và hướng dẫn chạy ổn.",
+        skills: ["Data Engineering", "README Writing"],
+    },
+    {
+        id: "sub-coccoc-de-review-002",
+        programId: "coccoc-de-intern-assessment",
+        taskId: "de-intern-package",
+        taskTitle: "Cốc Cốc · DE Intern Assessment",
+        submissionLabel: "Cốc Cốc · DE Intern Assessment",
+        company: "Cốc Cốc",
+        role: "Data Engineering Intern",
+        submittedAt: "Hôm qua · 18:40",
+        status: "failed",
+        score: 38,
+        type: "assessment_review",
+        fileName: "no-readme.zip",
+        decision: "Reject",
+        riskFlags: ["Thiếu README / explanation"],
+        checksSummary: "README failed · Code run warning",
+        llmReviewSummary:
+            "Thiếu README — reviewer khó hiểu approach. Cần bổ sung trước khi nộp lại.",
+        feedback:
+            "Reject. Thiếu README và phần giải thích cách chạy.",
+        skills: ["Submission Quality"],
     },
 ];

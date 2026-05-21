@@ -22,7 +22,7 @@ export default function LearnTopicsClient() {
                     {vi.learn.pageSubtitle}
                 </p>
                 <p className="mt-2 text-xs text-slate-500 dark:text-zinc-600">
-                    {LEARNING_TOPICS.length} chủ đề · 1 chủ đề có thể học đầy đủ trong bản demo
+                    {LEARNING_TOPICS.length} chủ đề · 1 chủ đề có thể học đầy đủ
                 </p>
 
                 <div className="mt-10 grid gap-6 lg:grid-cols-3">

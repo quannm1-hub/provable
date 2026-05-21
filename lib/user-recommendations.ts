@@ -37,6 +37,18 @@ export const userRecommendations: UserRecommendation[] = [
         priority: "medium",
     },
     {
+        id: "rec-coccoc-de",
+        type: "simulation",
+        title: "Cốc Cốc · DE Intern Assessment",
+        description:
+            "Upload package bài làm và xem review pipeline: format, similarity, README, LLM review.",
+        actionLabel: "Bắt đầu chấm thử",
+        targetView: "internship-workspace",
+        targetId: "coccoc-de-intern-assessment",
+        href: "/internships/coccoc-de-assessment",
+        priority: "high",
+    },
+    {
         id: "rec-003",
         type: "review",
         title: "Xem lại bài nộp UPDATE",

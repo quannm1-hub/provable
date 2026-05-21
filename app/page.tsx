@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, Briefcase, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen, Briefcase } from "lucide-react";
 import AppNav from "@/app/components/layout/AppNav";
 import DashboardWelcome from "@/app/components/user/DashboardWelcome";
 import {
@@ -142,10 +142,6 @@ export default function Home() {
                     </div>
                 </section>
 
-                <p className="mt-12 flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-zinc-600">
-                    <Sparkles className="h-3.5 w-3.5 text-amber-500 dark:text-amber-400" />
-                    {vi.app.prototypeNote}
-                </p>
             </main>
         </div>
     );

@@ -86,7 +86,7 @@ function scoreFromContent(content: string, task: DocumentTask): Omit<PrdEvaluati
             recommendations.push("Bổ sung user flow theo từng bước.");
         }
         if (missingSections.includes("Yêu cầu phi chức năng")) {
-            recommendations.push("Thêm yêu cầu phi chức năng (theme, ngôn ngữ, hiệu năng demo).");
+            recommendations.push("Thêm yêu cầu phi chức năng (theme, ngôn ngữ, hiệu năng).");
         }
         if (missingSections.includes("Tiêu chí thành công")) {
             recommendations.push("Thêm tiêu chí thành công đo được.");

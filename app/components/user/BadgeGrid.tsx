@@ -121,7 +121,7 @@ export default function BadgeGrid({ badges, showCertificate }: Props) {
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 p-4">
                     <div className="max-w-sm rounded-xl border border-slate-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
                         <p className="text-sm text-slate-700 dark:text-zinc-300">
-                            Tính năng tải chứng nhận đang được mock.
+                            Tính năng tải chứng nhận sẽ có trong phiên bản tiếp theo.
                         </p>
                         <button
                             type="button"

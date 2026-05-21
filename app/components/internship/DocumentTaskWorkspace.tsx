@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState, type DragEvent } from "react";
+import { useCallback, useRef, useState, type DragEvent, type RefObject } from "react";
 import {
     CheckCircle2,
     FileText,
@@ -9,7 +9,11 @@ import {
     Upload,
 } from "lucide-react";
 import Button from "@/app/components/ui/Button";
-import type { DocumentTask } from "@/lib/document-tasks";
+import EvaluationPipeline, {
+    checkStatusToPipeline,
+    type PipelineStep,
+} from "@/app/components/assessment/EvaluationPipeline";
+import { PRD_BRIEF_SECTIONS, type DocumentTask } from "@/lib/document-tasks";
 import type { PrdEvaluationResult } from "@/lib/prd-evaluation";
 
 export type UploadPhase =
@@ -26,6 +30,8 @@ type Props = {
     onFileSelect: (file: File | null) => void;
     onEvaluate: () => void;
     onDownloadTemplate: () => void;
+    inlineLayout?: boolean;
+    resultRef?: RefObject<HTMLDivElement | null>;
 };
 
 function formatSize(bytes: number): string {
@@ -42,6 +48,8 @@ export default function DocumentTaskWorkspace({
     onFileSelect,
     onEvaluate,
     onDownloadTemplate,
+    inlineLayout,
+    resultRef,
 }: Props) {
     const inputRef = useRef<HTMLInputElement>(null);
     const [dragOver, setDragOver] = useState(false);
@@ -64,42 +72,95 @@ export default function DocumentTaskWorkspace({
     };
 
     const passed = evaluation?.status === "passed";
+    const running = phase === "evaluating";
 
-    return (
-        <div className="flex h-full min-h-0 flex-col overflow-hidden bg-white dark:bg-zinc-950">
-            <div className="shrink-0 border-b border-slate-200 px-4 py-3 dark:border-zinc-800">
-                <p className="text-xs font-medium text-violet-600 dark:text-indigo-400">
-                    Task Workspace
-                </p>
-                <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
-                    {task.title}
-                </h2>
-                <p className="mt-0.5 text-xs text-slate-500">
-                    {task.company} · {task.role} · {task.team}
-                </p>
-            </div>
+    const pipelineSteps: PipelineStep[] = [
+        {
+            id: "format",
+            label: "Kiểm tra file và format",
+            status: running ? "running" : file ? "passed" : "pending",
+            message: file ? "File hợp lệ" : undefined,
+        },
+        {
+            id: "similarity",
+            label: "So khớp đáp án tham khảo",
+            status: running
+                ? "running"
+                : evaluation
+                  ? checkStatusToPipeline(
+                        evaluation.status === "passed"
+                            ? "passed"
+                            : evaluation.status === "needs_improvement"
+                              ? "warning"
+                              : "failed",
+                    )
+                  : "pending",
+            message: evaluation ? `${evaluation.score}% similarity` : undefined,
+            score: evaluation?.score,
+        },
+        {
+            id: "sections",
+            label: "Kiểm tra section bắt buộc",
+            status: running
+                ? "running"
+                : evaluation
+                  ? evaluation.missingSections.length === 0
+                      ? "passed"
+                      : "warning"
+                  : "pending",
+        },
+        {
+            id: "result",
+            label: "Tổng hợp kết quả",
+            status: running
+                ? "running"
+                : evaluation
+                  ? passed
+                      ? "passed"
+                      : "warning"
+                  : "pending",
+            message: evaluation?.statusLabel,
+        },
+    ];
 
-            <div className="scrollbar-none min-h-0 flex-1 space-y-4 overflow-y-auto p-4">
+    const content = (
+        <div className={inlineLayout ? "space-y-6" : "scrollbar-none min-h-0 flex-1 space-y-4 overflow-y-auto p-4"}>
+            {inlineLayout && (
+                <section className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900/50">
+                    <h2 className="text-base font-bold">Brief</h2>
+                    <p className="mt-2 text-xs text-slate-600">{task.scenario}</p>
+                    <p className="mt-3 text-xs">{PRD_BRIEF_SECTIONS.businessContext}</p>
+                    <p className="mt-2 text-xs font-medium">Tiêu chí chấm:</p>
+                    <ul className="mt-1 list-inside list-disc text-xs text-slate-600">
+                        {task.evaluationCriteria.map((c) => (
+                            <li key={c}>{c}</li>
+                        ))}
+                    </ul>
+                    <p className="mt-2 text-[10px] text-amber-700">
+                        Đạt từ {task.passThreshold}% trở lên
+                    </p>
+                </section>
+            )}
+
+            {!inlineLayout && (
                 <div className="rounded-xl border border-slate-200 bg-slate-50/80 p-3 dark:border-zinc-800 dark:bg-zinc-900/50">
-                    <p className="text-[10px] font-semibold uppercase text-slate-500">
-                        Mục tiêu
-                    </p>
-                    <p className="mt-1 text-xs text-slate-700 dark:text-zinc-300">
-                        {task.objective}
-                    </p>
-                    <p className="mt-2 text-[10px] text-slate-500">
-                        Đầu ra: {task.deliverable}
-                    </p>
+                    <p className="text-[10px] font-semibold uppercase text-slate-500">Mục tiêu</p>
+                    <p className="mt-1 text-xs text-slate-700 dark:text-zinc-300">{task.objective}</p>
+                    <p className="mt-2 text-[10px] text-slate-500">Đầu ra: {task.deliverable}</p>
                 </div>
+            )}
 
-                <Button variant="secondary" size="md" onClick={onDownloadTemplate}>
-                    Tải template PRD
-                </Button>
+            <Button variant="secondary" size="md" onClick={onDownloadTemplate}>
+                Tải template PRD
+            </Button>
 
-                <section>
-                    <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
-                        Nộp tài liệu PRD
-                    </h3>
+            <section className={inlineLayout ? "rounded-2xl border border-slate-200 bg-white p-5 dark:border-zinc-800" : ""}>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
+                    Nộp tài liệu PRD
+                </h3>
+                <p className="mt-1 text-xs text-slate-500">
+                    Sau khi upload, bấm Chấm tài liệu để xem kết quả ngay bên dưới.
+                </p>
                     {!file ? (
                         <div
                             role="button"
@@ -128,7 +189,7 @@ export default function DocumentTaskWorkspace({
                                 Hỗ trợ: .docx, .pdf, .md, .txt
                             </p>
                             <p className="mt-1 text-[10px] text-slate-400">
-                                Tối đa 10MB trong bản demo
+                                Tối đa 10MB
                             </p>
                             <input
                                 ref={inputRef}
@@ -184,41 +245,65 @@ export default function DocumentTaskWorkspace({
                     )}
                 </section>
 
-                {phase === "evaluating" && (
-                    <div className="flex items-center gap-2 rounded-lg border border-violet-200 bg-violet-50 px-3 py-2 text-sm text-violet-800 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-200">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Đang so sánh với đáp án tham khảo…
-                    </div>
-                )}
+            {(running || evaluation) && (
+                <EvaluationPipeline steps={pipelineSteps} />
+            )}
 
-                {evaluation && phase === "evaluated" && (
-                    <div
-                        className={`rounded-xl border p-4 ${
+            {evaluation && phase === "evaluated" && (
+                <div ref={resultRef} className="space-y-4">
+                    <section
+                        className={`rounded-2xl border p-5 ${
                             passed
-                                ? "border-emerald-200 bg-emerald-50/80 dark:border-emerald-900/50 dark:bg-emerald-950/30"
-                                : "border-amber-200 bg-amber-50/80 dark:border-amber-900/50 dark:bg-amber-950/30"
+                                ? "border-emerald-200 bg-emerald-50/80 dark:border-emerald-900/50"
+                                : "border-amber-200 bg-amber-50/80 dark:border-amber-900/50"
                         }`}
                     >
-                        <div className="flex items-center justify-between">
-                            <span className="text-sm font-semibold">
-                                {evaluation.statusLabel}
-                            </span>
-                            <span className="text-2xl font-bold">{evaluation.score}%</span>
+                        <h3 className="text-sm font-semibold">Kết quả chấm bài</h3>
+                        <div className="mt-3 flex items-center justify-between">
+                            <span className="text-lg font-bold">{evaluation.statusLabel}</span>
+                            <span className="text-3xl font-bold">{evaluation.score}%</span>
                         </div>
-                        <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/80 dark:bg-zinc-800">
-                            <div
-                                className={`h-full rounded-full ${
-                                    passed ? "bg-emerald-500" : "bg-amber-500"
-                                }`}
-                                style={{ width: `${evaluation.score}%` }}
-                            />
-                        </div>
-                        <p className="mt-2 text-xs text-slate-600 dark:text-zinc-400">
-                            {evaluation.message}
-                        </p>
-                    </div>
-                )}
+                        <p className="mt-2 text-xs">{evaluation.message}</p>
+                        {evaluation.matchedSections.length > 0 && (
+                            <div className="mt-3">
+                                <p className="text-xs font-medium">Phần đã khớp</p>
+                                <p className="text-xs text-emerald-700">
+                                    {evaluation.matchedSections.join(" · ")}
+                                </p>
+                            </div>
+                        )}
+                        {evaluation.missingSections.length > 0 && (
+                            <div className="mt-2">
+                                <p className="text-xs font-medium">Phần còn thiếu</p>
+                                <p className="text-xs text-amber-800">
+                                    {evaluation.missingSections.join(" · ")}
+                                </p>
+                            </div>
+                        )}
+                        {evaluation.recommendations.length > 0 && (
+                            <ul className="mt-3 list-inside list-disc text-xs text-violet-700 dark:text-indigo-400">
+                                {evaluation.recommendations.map((r) => (
+                                    <li key={r}>{r}</li>
+                                ))}
+                            </ul>
+                        )}
+                    </section>
+                </div>
+            )}
+        </div>
+    );
+
+    if (inlineLayout) return content;
+
+    return (
+        <div className="flex h-full min-h-0 flex-col overflow-hidden bg-white dark:bg-zinc-950">
+            <div className="shrink-0 border-b border-slate-200 px-4 py-3 dark:border-zinc-800">
+                <p className="text-xs font-medium text-violet-600 dark:text-indigo-400">
+                    Task Workspace
+                </p>
+                <h2 className="text-sm font-semibold">{task.title}</h2>
             </div>
+            {content}
         </div>
     );
 }

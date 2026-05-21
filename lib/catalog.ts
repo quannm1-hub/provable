@@ -42,6 +42,14 @@ export type InternshipProgram = {
     status: InternshipStatus;
     href?: string;
     previewTasks?: string[];
+    /** Subtitle on catalog card (e.g. Retention Case · Product Analytics) */
+    catalogSubtitle?: string;
+    /** Extra badges on interview catalog cards */
+    catalogBadges?: string[];
+    /** Show "Xem chương trình" + secondary start CTA */
+    dualInterviewCta?: boolean;
+    /** Label for secondary CTA when dualInterviewCta (default: Bắt đầu interview) */
+    simulationCtaLabel?: string;
 };
 
 export const LEARNING_TOPICS: LearningTopic[] = [
@@ -184,7 +192,7 @@ export const INTERNSHIP_PROGRAMS: InternshipProgram[] = [
         initials: "NT",
         role: "Associate Product Manager",
         description:
-            "Hoàn thành một PRD cho tính năng Provable Coach dựa trên brief sản phẩm — tải template, upload và nhận đánh giá mock.",
+            "Hoàn thành một PRD cho tính năng Provable Coach dựa trên brief sản phẩm — tải template, upload và nhận đánh giá.",
         dataset: "document",
         skills: [
             "Product Thinking",
@@ -204,6 +212,45 @@ export const INTERNSHIP_PROGRAMS: InternshipProgram[] = [
             "Đọc product brief",
             "Tải template PRD",
             "Upload & chấm tài liệu",
+        ],
+    },
+    {
+        id: "novatech-da-retention-interview",
+        companyId: "novatech",
+        title: "Mô phỏng phỏng vấn Data Analyst Intern",
+        programTitleEn: "Data Analyst Intern Retention Interview",
+        catalogSubtitle: "Retention Case · Product Analytics",
+        company: "NovaTech",
+        initials: "NT",
+        role: "Data Analyst Intern",
+        description:
+            "Phân tích retention người dùng từ dữ liệu users, transactions và events. Sau đó trình bày insight và thiết kế dashboard một trang cho PM.",
+        dataset: "users · transactions · events",
+        skills: [
+            "SQL",
+            "Retention",
+            "Dashboard",
+            "Data Storytelling",
+        ],
+        catalogBadges: [
+            "SQL",
+            "Retention",
+            "Dashboard",
+            "Data Storytelling",
+            "45-60 phút",
+        ],
+        estimatedTime: "45-60 phút",
+        difficulty: "Cơ bản đến trung bình",
+        taskCount: 3,
+        format: "Interview Simulation",
+        category: "data",
+        status: "available",
+        href: "/internships/novatech-da-retention",
+        dualInterviewCta: true,
+        previewTasks: [
+            "SQL retention & behavior",
+            "Insight cho PM",
+            "dashboard một trang",
         ],
     },
     {
@@ -233,6 +280,47 @@ export const INTERNSHIP_PROGRAMS: InternshipProgram[] = [
         ],
     },
     {
+        id: "coccoc-de-intern-assessment",
+        companyId: "coccoc",
+        title: "Cốc Cốc · DE Intern Assessment",
+        programTitleEn: "Cốc Cốc · DE Intern Assessment",
+        catalogSubtitle: "Chấm bài · Upload package · Review pipeline",
+        company: "Cốc Cốc",
+        initials: "CC",
+        role: "Data Engineering Intern",
+        description:
+            "Upload bài làm assessment và xem hệ thống chấm lỗi format, similarity, README, deadline, khả năng chạy, chất lượng giải thích và LLM review.",
+        dataset: "Submission package",
+        skills: [
+            "Data Engineering",
+            "README Writing",
+            "Submission Quality",
+            "Code Review",
+            "Data Pipeline Reasoning",
+        ],
+        catalogBadges: [
+            "Review pipeline",
+            "Similarity check",
+            "LLM review",
+            "DE Intern",
+        ],
+        estimatedTime: "3 ngày",
+        difficulty: "Intern / Entry-level",
+        taskCount: 1,
+        format: "Assessment review · Upload",
+        category: "data",
+        status: "available",
+        href: "/internships/coccoc-de-assessment",
+        dualInterviewCta: true,
+        simulationCtaLabel: "Bắt đầu chấm thử",
+        previewTasks: [
+            "Upload .zip / .md package",
+            "Pre-check format & README",
+            "Similarity & code run",
+            "LLM reviewer decision",
+        ],
+    },
+    {
         id: "fpt-data-ops",
         companyId: "fpt-software",
         title: "Thực tập ảo Data Operations",
@@ -241,7 +329,7 @@ export const INTERNSHIP_PROGRAMS: InternshipProgram[] = [
         initials: "FPT",
         role: "Thực tập sinh Data Operations",
         description:
-            "Chương trình mô phỏng Data Operations tại FPT Software — xem trước trong bản demo.",
+            "Chương trình Data Operations tại FPT Software — sắp ra mắt.",
         dataset: "employees",
         skills: ["SQL", "Data Cleaning", "Query Safety"],
         estimatedTime: "20-30 phút",

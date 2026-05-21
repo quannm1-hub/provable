@@ -1,12 +1,10 @@
-/** Vietnamese UI copy for Provable prototype */
+/** Vietnamese UI copy for Provable */
 
 export const vi = {
     app: {
         title: "Provable",
         subtitle:
             "Học kỹ năng qua thực hành có hướng dẫn, sau đó chứng minh năng lực bằng mô phỏng công việc thực tế.",
-        prototypeNote:
-            "Bản demo: SQL (Cốc Cốc), phỏng vấn PM (NovaTech) đã có đầy đủ tương tác",
     },
     nav: {
         dashboard: "Bảng điều khiển",
@@ -20,7 +18,7 @@ export const vi = {
         learnSkillDesc:
             "Học theo lộ trình tương tác, có câu hỏi kiểm tra mức độ hiểu, bài tập thực hành và phản hồi tức thì.",
         chooseTopic: "Chọn chủ đề học",
-        internship: "Giả lập thực tập doanh nghiệp",
+        internship: "Thực tập ảo doanh nghiệp",
         internshipDesc:
             "Thực hành các task giống môi trường công ty để rèn tư duy xử lý công việc.",
         chooseInternship: "Chọn chương trình thực tập",
@@ -94,7 +92,7 @@ export const vi = {
         },
     },
     internship: {
-        pageTitle: "Giả lập thực tập doanh nghiệp",
+        pageTitle: "Thực tập ảo doanh nghiệp",
         pageSubtitle:
             "Khám phá các chương trình mô phỏng công việc, hoàn thành task thực tế và chứng minh năng lực qua sản phẩm đầu ra.",
         startProgram: "Bắt đầu",
@@ -129,8 +127,6 @@ export const vi = {
                 "Chào mừng bạn đến mô phỏng Data Operations tại Cốc Cốc. Bạn sẽ đóng vai thực tập sinh trong team People Operations và hỗ trợ chuẩn bị dữ liệu cho báo cáo nhân sự hàng tháng.",
             prerequisite:
                 "Mô phỏng này sử dụng các kiến thức SQL cơ bản như SELECT, WHERE, AND / OR, UPDATE và DELETE. Nếu bạn chưa quen, bạn có thể học phần SQL cơ bản trước.",
-            disclaimer:
-                "Mô phỏng tự học — không phải thực tập hay việc làm thật. Luyện task giống công việc và đối chiếu với đáp án mẫu.",
             start: "Bắt đầu thực tập",
             learnFirst: "Học SQL cơ bản trước",
         },
@@ -146,7 +142,7 @@ export const vi = {
                 "Bạn đã hoàn thành chương trình Thực tập ảo Data Operations tại Cốc Cốc.",
             certificateLabel: "Chứng nhận mô phỏng",
             learner: "Người học",
-            learnerName: "Demo User",
+            learnerName: "Học viên",
             role: "Vai trò",
             status: "Trạng thái",
             statusDone: "Hoàn thành",
@@ -229,7 +225,7 @@ export const vi = {
         preview: "Bản xem trước",
         updatePreview: "Bản xem trước cập nhật",
         deletePreview: "Bản xem trước xóa",
-        notPermanent: "Dữ liệu không bị thay đổi vĩnh viễn trong bản demo này.",
+        notPermanent: "Thay đổi chỉ áp dụng trong phiên làm việc hiện tại.",
         submittedOk: "Đã nộp bài — câu trả lời được chấp nhận",
         notCorrect: "Chưa đúng — xem phản hồi từ coach",
         runOrSubmit: "Chạy SQL hoặc nộp bài để xem kết quả tại đây.",
@@ -250,10 +246,8 @@ export const vi = {
         needFrom: "Cần có FROM employees.",
         updateNoWhere: "UPDATE không có WHERE có thể thay đổi mọi dòng. Hãy thêm WHERE.",
         deleteNoWhere: "DELETE không có WHERE có thể xóa mọi dòng. Hãy thêm WHERE.",
-        updatePreview: (n: number) =>
-            `Xem trước: ${n} dòng sẽ được cập nhật (dữ liệu không đổi vĩnh viễn trong demo).`,
-        deletePreview: (n: number) =>
-            `Xem trước: ${n} dòng sẽ bị xóa (dữ liệu không đổi vĩnh viễn trong demo).`,
+        updatePreview: (n: number) => `Xem trước: ${n} dòng sẽ được cập nhật.`,
+        deletePreview: (n: number) => `Xem trước: ${n} dòng sẽ bị xóa.`,
         unsupported: "Câu lệnh chưa hỗ trợ. Hãy thử SELECT, UPDATE hoặc DELETE.",
     },
 } as const;

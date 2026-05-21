@@ -60,6 +60,11 @@ export default function InternshipCard({
                             <h2 className="text-lg font-semibold leading-snug text-slate-900 dark:text-white">
                                 {program.title}
                             </h2>
+                            {program.catalogSubtitle && (
+                                <p className="mt-0.5 text-xs text-violet-600 dark:text-indigo-400">
+                                    {program.catalogSubtitle}
+                                </p>
+                            )}
                             {program.programTitleEn && (
                                 <p className="mt-0.5 text-[11px] text-slate-400 dark:text-zinc-600">
                                     {program.programTitleEn}
@@ -95,7 +100,7 @@ export default function InternshipCard({
                 </p>
 
                 <ul className="mt-4 flex flex-wrap gap-1.5">
-                    {program.skills.map((s) => (
+                    {(program.catalogBadges ?? program.skills).map((s) => (
                         <li
                             key={s}
                             className="rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[10px] font-medium text-slate-600 dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-400"

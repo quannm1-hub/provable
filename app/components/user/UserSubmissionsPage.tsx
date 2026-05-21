@@ -48,7 +48,7 @@ export default function UserSubmissionsPage() {
                             Bài nộp của tôi
                         </h1>
                         <p className="text-sm text-slate-500">
-                            Lịch sử nộp task trong mô phỏng (mock)
+                            Lịch sử nộp task
                         </p>
                     </div>
                 </div>
@@ -104,7 +104,17 @@ export default function UserSubmissionsPage() {
                                     {sub.score}
                                 </span>
                             </div>
-                            {sub.type === "document" ? (
+                            {sub.type === "assessment_review" ? (
+                                <p className="mt-3 rounded-lg bg-slate-100 px-3 py-2 text-xs dark:bg-zinc-800">
+                                    📦 {sub.fileName} · {sub.decision ?? "—"} · Điểm{" "}
+                                    {sub.score}%
+                                    {sub.riskFlags?.length ? (
+                                        <span className="block mt-1 text-amber-700">
+                                            Rủi ro: {sub.riskFlags.join(", ")}
+                                        </span>
+                                    ) : null}
+                                </p>
+                            ) : sub.type === "document" ? (
                                 <p className="mt-3 rounded-lg bg-slate-100 px-3 py-2 font-mono text-xs dark:bg-zinc-800">
                                     📄 {sub.fileName} · Độ trùng khớp {sub.score}%
                                 </p>
@@ -122,8 +132,17 @@ export default function UserSubmissionsPage() {
                                     size="sm"
                                     onClick={() => setDetail(sub)}
                                 >
-                                    Xem chi tiết
+                                    {sub.type === "assessment_review"
+                                        ? "Xem review"
+                                        : "Xem chi tiết"}
                                 </Button>
+                                {sub.type === "assessment_review" && (
+                                    <Link href="/internships/coccoc-de-assessment?start=simulation">
+                                        <Button variant="secondary" size="sm">
+                                            Upload lại
+                                        </Button>
+                                    </Link>
+                                )}
                                 {(() => {
                                     const sid = sub.skills[0]
                                         ? skillToId[sub.skills[0]]
@@ -142,7 +161,15 @@ export default function UserSubmissionsPage() {
                                     href={
                                         sub.programId === "novatech-pm-interview"
                                             ? "/internships/novatech-pm"
-                                            : `/internships/coccoc?task=${sub.taskId}`
+                                            : sub.programId ===
+                                                "novatech-da-retention-interview"
+                                              ? "/internships/novatech-da-retention"
+                                              : sub.programId ===
+                                                    "coccoc-de-intern-assessment" ||
+                                                  sub.programId ===
+                                                      "shopify-de-intern-assessment"
+                                                ? "/internships/coccoc-de-assessment"
+                                                : `/internships/coccoc?task=${sub.taskId}`
                                     }
                                 >
                                     <Button variant="ghost" size="sm">

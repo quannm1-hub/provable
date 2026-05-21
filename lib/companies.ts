@@ -25,6 +25,7 @@ export type CompanyProfile = {
     availablePrograms: string[];
     values: string[];
     status: CompanyStatus;
+    disclaimer?: string;
 };
 
 export const COMPANIES: CompanyProfile[] = [
@@ -59,7 +60,10 @@ export const COMPANIES: CompanyProfile[] = [
             "Requirement Analysis",
             "User Flow",
         ],
-        availablePrograms: ["novatech-pm-interview"],
+        availablePrograms: [
+            "novatech-pm-interview",
+            "novatech-da-retention-interview",
+        ],
         values: ["Rõ ràng", "Lấy người học làm trung tâm", "Đo lường được"],
         status: "available",
     },
@@ -129,32 +133,39 @@ export const COMPANIES: CompanyProfile[] = [
         id: "coccoc",
         name: "Cốc Cốc",
         logoInitials: "CC",
-        industry: "Trình duyệt · Quảng cáo & Tìm kiếm",
-        size: "500+ nhân sự",
-        location: "Hà Nội · Việt Nam",
+        industry: "Browser / Search / Consumer Technology",
+        size: "Tech company",
+        location: "Việt Nam",
         shortDescription:
-            "Mô phỏng bối cảnh Cốc Cốc — công ty công nghệ Việt Nam, luyện SQL với dữ liệu nội bộ và task giống công việc thực tế.",
+            "Công ty công nghệ Việt Nam — thực tập Data Operations và chấm bài DE Intern Assessment.",
         longDescription:
-            "Trong mô phỏng, bạn đóng vai thực tập sinh Data Operations. Team People Operations cần dữ liệu nhân sự chính xác để chuẩn bị báo cáo hàng tháng — bạn sẽ kiểm tra, lọc và viết truy vấn SQL an toàn.",
-        mission: "Giúp người dùng Việt tìm kiếm và trải nghiệm web tốt hơn.",
+            "Luyện SQL với dữ liệu nhân sự trong chương trình Data Operations, hoặc nộp package DE Intern Assessment để xem review pipeline (format, similarity, code run, LLM review).",
+        mission: "Xây dựng các sản phẩm công nghệ phục vụ người dùng Internet tại Việt Nam.",
         businessContext:
-            "Team vận hành dữ liệu đang chuẩn bị báo cáo nhân sự. Người học kiểm tra, lọc và chuẩn bị dữ liệu bằng SQL trước khi nộp cho leadership.",
+            "Team Data/Product cần phân tích hành vi người dùng trên trình duyệt, traffic, domain usage, DAU và các chỉ số liên quan đến tăng trưởng sản phẩm.",
         teams: [
             {
-                name: "People Operations",
+                name: "Data Analytics",
                 description:
-                    "Quản lý dữ liệu nhân sự, headcount và trạng thái nhân viên phục vụ báo cáo nội bộ.",
+                    "Phân tích dữ liệu người dùng, clickstream, traffic và các chỉ số sản phẩm.",
             },
             {
-                name: "Data Operations",
+                name: "Product Analytics",
                 description:
-                    "Kiểm tra chất lượng dữ liệu, chuẩn hóa bảng và viết truy vấn phục vụ báo cáo.",
+                    "Hỗ trợ Product Manager hiểu hành vi người dùng, vấn đề retention và cơ hội tăng trưởng.",
             },
         ],
         datasets: ["employees"],
-        skills: ["SQL", "Data Inspection", "Filtering", "Query Safety", "Business Reasoning"],
-        availablePrograms: ["coccoc-data-ops"],
-        values: ["Tập trung người dùng Việt", "Đo lường rõ ràng", "Tối ưu chi phí"],
+        skills: [
+            "SQL",
+            "Data Engineering",
+            "Analytical Thinking",
+            "Clickstream Analysis",
+            "README Writing",
+            "Submission Quality",
+        ],
+        availablePrograms: ["coccoc-data-ops", "coccoc-de-intern-assessment"],
+        values: ["Data-informed", "User understanding", "Product thinking"],
         status: "available",
     },
 ];

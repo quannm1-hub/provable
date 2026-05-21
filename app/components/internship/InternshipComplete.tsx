@@ -60,10 +60,6 @@ export default function InternshipComplete({
                 <h1 className="mt-2 text-center text-2xl font-bold text-slate-900 dark:text-white">
                     {vi.internship.complete.subtitle}
                 </h1>
-                <p className="mt-2 text-center text-sm text-slate-500 dark:text-zinc-500">
-                    {INTERNSHIP_META.disclaimer}
-                </p>
-
                 <div className="relative mt-10 overflow-hidden rounded-2xl border-2 border-amber-200/80 bg-white p-8 shadow-xl dark:border-amber-800/40 dark:bg-zinc-900">
                     <div className="absolute right-4 top-4 opacity-20">
                         <Sparkles className="h-16 w-16 text-amber-400" />

@@ -44,7 +44,7 @@ export default function SqlModuleRoadmap() {
                                 <span className="ml-2 text-[10px] text-slate-400">
                                     {prog.progress}% ·{" "}
                                     {m.status === "available"
-                                        ? "Có trong demo"
+                                        ? "Có sẵn"
                                         : m.status === "preview"
                                           ? "Xem trước"
                                           : "Sắp ra mắt"}

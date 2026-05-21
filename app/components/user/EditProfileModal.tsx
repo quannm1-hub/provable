@@ -22,7 +22,7 @@ export default function EditProfileModal({ open, onClose }: Props) {
                     </button>
                 </div>
                 <p className="mt-2 text-sm text-amber-700 dark:text-amber-400">
-                    Tính năng chỉnh sửa hồ sơ đang được mock cho demo.
+                    Tính năng chỉnh sửa hồ sơ sẽ có trong phiên bản tiếp theo.
                 </p>
                 <div className="mt-4 space-y-3">
                     {[

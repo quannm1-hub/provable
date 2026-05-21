@@ -171,10 +171,6 @@ export default function CompanyProfilePage({
                     <p className="mt-6 max-w-3xl text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
                         {company.shortDescription}
                     </p>
-                    <p className="mt-3 text-[11px] italic text-slate-400 dark:text-zinc-600">
-                        Đây là doanh nghiệp giả lập được tạo cho mục đích học tập. Không liên
-                        kết với công ty thật.
-                    </p>
                 </section>
 
                 <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_360px]">

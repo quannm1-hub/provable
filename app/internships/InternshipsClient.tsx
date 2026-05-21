@@ -42,7 +42,7 @@ export default function InternshipsClient() {
                         Doanh nghiệp mô phỏng
                     </h2>
                     <p className="mt-1 text-xs text-slate-500 dark:text-zinc-500">
-                        Tìm hiểu bối cảnh doanh nghiệp giả lập trước khi bắt đầu chương trình.
+                        Tìm hiểu bối cảnh doanh nghiệp trước khi bắt đầu chương trình.
                     </p>
                     <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                         {COMPANIES.map((c) => (

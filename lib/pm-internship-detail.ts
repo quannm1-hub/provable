@@ -9,7 +9,7 @@ export const PM_INTERVIEW_PROGRAM = {
     role: "Associate Product Manager",
     team: "Product Platform Team",
     description:
-        "Hoàn thành một PRD cho tính năng Provable Coach dựa trên brief sản phẩm — tải template, điền ngoài app, upload và nhận đánh giá mock.",
+        "Hoàn thành một PRD cho tính năng Provable Coach dựa trên brief sản phẩm — tải template, điền ngoài app, upload và nhận đánh giá.",
     estimatedTime: "30-45 phút",
     taskCount: 1,
     difficulty: "Cơ bản",
@@ -42,7 +42,7 @@ export const PM_TASK_TIMELINE = [
     {
         number: 4,
         title: "Upload bài làm",
-        desc: "Nộp file .md, .txt, .pdf hoặc .docx (mock).",
+        desc: "Nộp file .md, .txt, .pdf hoặc .docx.",
     },
     {
         number: 5,
@@ -64,15 +64,15 @@ export const PM_VALUE_PROPS = [
         desc: "Mô phỏng công việc PM: viết PRD thay vì viết query.",
     },
     {
-        title: "Upload & chấm mock",
-        desc: "Demo workflow nộp tài liệu và so sánh đáp án tham khảo.",
+        title: "Upload & chấm bài",
+        desc: "Workflow nộp tài liệu và so sánh đáp án tham khảo.",
     },
     {
         title: "Tiêu chí rõ ràng",
-        desc: "Pass khi độ trùng khớp ≥ 90% (rule-based trong prototype).",
+        desc: "Pass khi độ trùng khớp ≥ 90% (rule-based).",
     },
     {
-        title: "Phù hợp demo 3–5 phút",
+        title: "Hoàn thành nhanh",
         desc: "Tải template → upload file mẫu → chấm → pass.",
     },
 ];

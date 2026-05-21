@@ -60,7 +60,37 @@ export default function SubmissionDetailModal({ submission, onClose }: Props) {
                     ))}
                 </div>
                 <div className="mt-4 space-y-3">
-                    {submission.type === "document" ? (
+                    {submission.type === "assessment_review" ? (
+                        <>
+                            <div>
+                                <p className="text-xs font-medium text-slate-500">File</p>
+                                <p className="mt-1 font-mono text-sm">{submission.fileName}</p>
+                            </div>
+                            <div>
+                                <p className="text-xs font-medium text-slate-500">
+                                    Quyết định reviewer
+                                </p>
+                                <p className="mt-1 font-semibold">{submission.decision}</p>
+                            </div>
+                            {submission.checksSummary && (
+                                <p className="text-sm text-slate-600">
+                                    Checks: {submission.checksSummary}
+                                </p>
+                            )}
+                            {submission.llmReviewSummary && (
+                                <p className="text-sm text-slate-600">
+                                    LLM review: {submission.llmReviewSummary}
+                                </p>
+                            )}
+                            {submission.riskFlags && submission.riskFlags.length > 0 && (
+                                <ul className="text-sm text-amber-800">
+                                    {submission.riskFlags.map((r) => (
+                                        <li key={r}>⚠ {r}</li>
+                                    ))}
+                                </ul>
+                            )}
+                        </>
+                    ) : submission.type === "document" ? (
                         <>
                             <div>
                                 <p className="text-xs font-medium text-slate-500">File đã nộp</p>

@@ -84,7 +84,7 @@ export default function PmInterviewProgramDetail({ onBack, onStart }: Props) {
                             </div>
                             <div>
                                 <dt className="text-slate-500">Ngưỡng pass</dt>
-                                <dd>≥ 90% trùng khớp (mock)</dd>
+                                <dd>≥ 90% trùng khớp</dd>
                             </div>
                         </dl>
                     </div>

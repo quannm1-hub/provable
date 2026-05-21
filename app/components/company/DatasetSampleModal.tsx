@@ -49,7 +49,7 @@ export default function DatasetSampleModal({ open, onClose, meta }: Props) {
                 </div>
 
                 <p className="mt-4 text-[11px] text-slate-400 dark:text-zinc-600">
-                    Dữ liệu giả lập cho mục đích học tập — không phải dữ liệu thật của doanh nghiệp.
+                    Dữ liệu mẫu phục vụ luyện tập — không phải dữ liệu sản xuất của doanh nghiệp.
                 </p>
 
                 <div className="mt-4">
