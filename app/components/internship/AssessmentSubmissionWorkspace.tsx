@@ -96,15 +96,6 @@ export default function AssessmentSubmissionWorkspace({
                 {deadline.toLocaleString("vi-VN")}
             </p>
 
-            <label className="flex cursor-pointer items-center gap-2 text-sm">
-                <input
-                    type="checkbox"
-                    checked={simulateLate}
-                    onChange={(e) => onSimulateLate(e.target.checked)}
-                />
-                Mô phỏng nộp trễ
-            </label>
-
             {!file ? (
                 <label
                     onDragOver={(e) => {
