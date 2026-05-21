@@ -11,7 +11,6 @@ import {
 import {
     appendCoachTurn,
     coachMsg,
-    resolveQuickAnswerSelection,
     stripUnresolvedQuickAnswers,
     type ChatMessage,
     type QuickReply,
@@ -36,6 +35,7 @@ import SqlEditor from "./SqlEditor";
 import { vi } from "@/lib/vi";
 import LearnReturnBanner from "@/app/components/skills/LearnReturnBanner";
 import { getLearnModuleRecommendation } from "@/lib/recommendations";
+import { isQuickAnswerSelectable, trySelectQuickAnswer } from "@/lib/chat-actions";
 import type { LearningTab, LearningUiAction } from "@/lib/learning-panel";
 import type { LearnReturnContext } from "@/lib/skill-navigation";
 import TopBar from "./TopBar";
@@ -321,6 +321,16 @@ export default function LearningWorkspace({
     }
 
     function handleRun() {
+        if (!sql.trim()) {
+            setMessages((prev) =>
+                appendCoachTurn(
+                    prev,
+                    [coachMsg(vi.sqlRunner.enterQuery, { type: "feedback" })],
+                    phase === "exercise" ? EXERCISE_HELP_OPTIONS : [],
+                ),
+            );
+            return;
+        }
         const result = runSql(sql, employees);
         setRunResult(result);
         setSubmitOk(null);
@@ -336,7 +346,26 @@ export default function LearningWorkspace({
     }
 
     function handleSubmit() {
-        if (!currentExercise) return;
+        if (!currentExercise) {
+            setMessages((prev) =>
+                appendCoachTurn(
+                    prev,
+                    [coachMsg(vi.sql.submitNeedsExercise, { type: "feedback" })],
+                    [],
+                ),
+            );
+            return;
+        }
+        if (!sql.trim()) {
+            setMessages((prev) =>
+                appendCoachTurn(
+                    prev,
+                    [coachMsg(vi.sqlRunner.enterQuery, { type: "feedback" })],
+                    EXERCISE_HELP_OPTIONS,
+                ),
+            );
+            return;
+        }
         setLearningTab("result");
         const result = currentExercise.validate(sql);
         if (result.ok) {
@@ -440,7 +469,8 @@ export default function LearningWorkspace({
     function pickQuickReply(messageId: string, option: QuickReply) {
         if (isTyping) return;
         const { action, label, uiAction } = option;
-        setMessages((prev) => resolveQuickAnswerSelection(prev, messageId, label));
+        if (!isQuickAnswerSelectable(messages, messageId)) return;
+        setMessages((prev) => trySelectQuickAnswer(prev, messageId, label));
         applyLearningUi(uiAction);
 
         if (action === "learn:data") {
@@ -526,6 +556,8 @@ export default function LearningWorkspace({
                         onShowHint={handleShowHint}
                         hintVisible={showHint}
                         canShowHintButton={confidence !== "none" && phase === "exercise"}
+                        submitDisabled={phase !== "exercise"}
+                        submitDisabledReason={vi.sql.submitNeedsExercise}
                     />
                 }
                 data={

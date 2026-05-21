@@ -5,6 +5,7 @@ import { BookOpen, FileText, Sparkles } from "lucide-react";
 import DatasetTableSection from "@/app/components/DatasetTableSection";
 import DataTable from "@/app/components/DataTable";
 import QueryResultView from "@/app/components/QueryResultView";
+import PanelTabs from "@/app/components/ui/PanelTabs";
 import {
     DATASET_META,
     type DatasetId,
@@ -145,25 +146,17 @@ export default function SimulationDataPanel({
                         Đáp án mẫu đã được mở khóa
                     </div>
                 )}
-                <div className="flex shrink-0 items-center justify-between gap-2 border-b border-slate-200 px-2 py-2 dark:border-zinc-800">
-                    <div className="flex flex-wrap gap-1">
-                        {tabOrder.map((id) => (
-                            <button
-                                key={id}
-                                type="button"
-                                onClick={() => onTabChange(id)}
-                                disabled={id === "modelAnswer" && !modelUnlocked}
-                                className={`rounded-md px-2 py-1 text-xs transition ${
-                                    activeTab === id
-                                        ? "bg-slate-200 text-slate-900 dark:bg-zinc-800 dark:text-white"
-                                        : "text-slate-500 hover:text-slate-800 disabled:opacity-40 dark:text-zinc-500"
-                                }`}
-                            >
-                                {SIMULATION_TAB_LABELS[id]}
-                            </button>
-                        ))}
-                    </div>
-                    <span className="shrink-0 rounded-full border border-slate-200 px-2 py-0.5 text-[10px] text-slate-500 dark:border-zinc-700 dark:text-zinc-500">
+                <div className="flex shrink-0 items-center justify-between gap-2 border-b border-slate-200 dark:border-zinc-800">
+                    <PanelTabs
+                        tabs={tabOrder.map((id) => ({
+                            id,
+                            label: SIMULATION_TAB_LABELS[id],
+                            disabled: id === "modelAnswer" && !modelUnlocked,
+                        }))}
+                        active={activeTab}
+                        onChange={onTabChange}
+                    />
+                    <span className="mr-2 shrink-0 rounded-full border border-slate-200 px-2 py-0.5 text-[10px] text-slate-500 dark:border-zinc-700 dark:text-zinc-500">
                         {statusLabel}
                     </span>
                 </div>
@@ -201,7 +194,7 @@ export default function SimulationDataPanel({
                                 </p>
                             </BriefSection>
                             <BriefSection
-                                title="Dataset sử dụng"
+                                title="Bảng dữ liệu sử dụng"
                                 highlight="dataset"
                                 activeHighlight={highlightTarget}
                             >

@@ -2,6 +2,7 @@
 
 import { AlertCircle, AlertTriangle, CheckCircle2 } from "lucide-react";
 import DataTable from "@/app/components/DataTable";
+import EmptyState from "@/app/components/ui/EmptyState";
 import type { RunResult } from "@/lib/types";
 import { vi } from "@/lib/vi";
 
@@ -32,9 +33,10 @@ export default function QueryResultView({
 
     if (!runResult) {
         return (
-            <p className="text-xs text-slate-400 dark:text-zinc-600">
-                {vi.data.runOrSubmit}
-            </p>
+            <EmptyState
+                title={vi.data.noResultYet}
+                description={vi.data.runToSeeResult}
+            />
         );
     }
 
@@ -67,7 +69,7 @@ export default function QueryResultView({
                         ) : (
                             <AlertCircle className="h-4 w-4 shrink-0" />
                         )}
-                        {isDanger ? "Cảnh báo" : "Query có lỗi cần sửa"}
+                        {isDanger ? "Cảnh báo" : vi.data.queryNeedsFix}
                     </p>
                     <p
                         className={`mt-1 text-xs ${

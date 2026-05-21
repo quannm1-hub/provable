@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "@/app/components/layout/ThemeToggle";
+import UserDropdown from "@/app/components/user/UserDropdown";
 import { vi } from "@/lib/vi";
 
 const links = [
@@ -44,8 +45,9 @@ export default function AppNav() {
                             </Link>
                         );
                     })}
-                    <div className="ml-2">
+                    <div className="ml-2 flex items-center gap-1">
                         <ThemeToggle />
+                        <UserDropdown />
                     </div>
                 </nav>
             </div>

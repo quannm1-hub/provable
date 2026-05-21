@@ -21,7 +21,7 @@ function RedirectContent() {
     );
 }
 
-export default function LegacyNovaTechRedirect() {
+export default function LegacyFptSoftwareRedirect() {
     return (
         <Suspense
             fallback={

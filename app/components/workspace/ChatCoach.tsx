@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { Bot, User } from "lucide-react";
 import type { ChatMessage, QuickReply } from "@/lib/chat-types";
+import { vi } from "@/lib/vi";
 
 type Props = {
     messages: ChatMessage[];
@@ -123,8 +124,8 @@ export default function ChatCoach({
     messages,
     isTyping,
     onQuickReply,
-    coachName = "Provable Coach",
-    coachSubtitle = "Chỉ dùng câu trả lời nhanh",
+    coachName = vi.learn.coachName,
+    coachSubtitle = vi.chat.chooseResponse,
     mode = "learning",
     avatarInitials,
 }: Props) {
@@ -221,6 +222,9 @@ export default function ChatCoach({
                             )}
                         </div>
                         <div className="rounded-2xl rounded-tl-sm border border-slate-200 bg-white px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900">
+                            <p className="mb-1.5 text-[10px] text-slate-400 dark:text-zinc-500">
+                                {vi.chat.mentorThinking}
+                            </p>
                             <div className="flex gap-1">
                                 <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400 dark:bg-zinc-500" />
                                 <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400 [animation-delay:150ms] dark:bg-zinc-500" />

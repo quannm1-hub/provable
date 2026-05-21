@@ -3,6 +3,7 @@
 import { useState } from "react";
 import DatasetTableSection from "@/app/components/DatasetTableSection";
 import QueryResultView, { QueryPreviewPanel } from "@/app/components/QueryResultView";
+import PanelTabs from "@/app/components/ui/PanelTabs";
 import {
     DATASET_META,
     type DatasetId,
@@ -98,22 +99,7 @@ export default function DataPanel({
 
     return (
         <div className="flex h-full min-h-0 flex-col overflow-hidden bg-slate-50 dark:bg-zinc-900/30">
-            <div className="flex shrink-0 gap-1 border-b border-slate-200 px-2 py-2 dark:border-zinc-800">
-                {tabs.map((t) => (
-                    <button
-                        key={t.id}
-                        type="button"
-                        onClick={() => setTab(t.id)}
-                        className={`rounded-md px-2.5 py-1 text-xs transition ${
-                            tab === t.id
-                                ? "bg-slate-200 text-slate-900 dark:bg-zinc-800 dark:text-white"
-                                : "text-slate-500 hover:text-slate-800 dark:text-zinc-500 dark:hover:text-zinc-300"
-                        }`}
-                    >
-                        {t.label}
-                    </button>
-                ))}
-            </div>
+            <PanelTabs tabs={tabs} active={tab} onChange={setTab} />
 
             <div className="scrollbar-none min-h-0 flex-1 overflow-y-auto p-3">
                 {tab === "lesson" && isLearning && (

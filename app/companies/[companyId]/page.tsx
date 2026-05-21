@@ -22,8 +22,8 @@ function CompanyProfileContent() {
         if (fromUrl === "simulation" && taskId) {
             setSimResume({
                 from: "simulation",
-                internshipId: searchParams.get("internshipId") ?? "novatech-data-ops",
-                programHref: searchParams.get("programHref") ?? "/internships/novatech",
+                internshipId: searchParams.get("internshipId") ?? "coccoc-data-ops",
+                programHref: searchParams.get("programHref") ?? "/internships/coccoc",
                 taskId,
                 activeTab: searchParams.get("activeTab") ?? undefined,
                 sqlInput: searchParams.get("sqlInput") ?? undefined,

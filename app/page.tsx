@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { ArrowRight, BookOpen, Briefcase, Sparkles } from "lucide-react";
 import AppNav from "@/app/components/layout/AppNav";
+import DashboardWelcome from "@/app/components/user/DashboardWelcome";
 import {
     INTERNSHIP_PROGRAMS,
     LEARNING_TOPICS,
     internshipBadge,
     topicBadge,
 } from "@/lib/catalog";
-import { MOCK_LEARNER_PROGRESS } from "@/lib/learner-progress";
+import { userLearningProgress } from "@/lib/user-learning-progress";
+import { userSimulationProgress } from "@/lib/user-simulation-progress";
 import { vi } from "@/lib/vi";
 
 export default function Home() {
@@ -23,6 +25,8 @@ export default function Home() {
                         {vi.app.subtitle}
                     </h1>
                 </section>
+
+                <DashboardWelcome />
 
                 <section className="mt-12 grid gap-4 md:grid-cols-2">
                     <div className="rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 to-white p-6 dark:border-indigo-800/40 dark:from-indigo-950/40 dark:to-zinc-900/50">
@@ -63,19 +67,19 @@ export default function Home() {
                     {[
                         {
                             label: "Chủ đề đang học",
-                            value: String(MOCK_LEARNER_PROGRESS.topicsInProgress),
+                            value: String(userLearningProgress.activeTopics),
                         },
                         {
-                            label: "Bài tập đã hoàn thành",
-                            value: String(MOCK_LEARNER_PROGRESS.tasksCompleted),
+                            label: "Bài tập đã làm",
+                            value: String(userLearningProgress.completedPracticeTasks),
                         },
                         {
                             label: "Mô phỏng đã mở",
-                            value: String(MOCK_LEARNER_PROGRESS.simulationsUnlocked),
+                            value: String(userSimulationProgress.startedSimulations),
                         },
                         {
                             label: "Mức sẵn sàng",
-                            value: `${MOCK_LEARNER_PROGRESS.readinessScore}%`,
+                            value: `${userLearningProgress.readinessScore}%`,
                         },
                     ].map((s) => (
                         <div
@@ -88,42 +92,6 @@ export default function Home() {
                             </p>
                         </div>
                     ))}
-                </section>
-
-                <section className="mt-8 grid gap-6 lg:grid-cols-2">
-                    <div className="rounded-xl border border-slate-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900/50">
-                        <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
-                            Hoạt động gần đây
-                        </h3>
-                        <ul className="mt-3 space-y-2">
-                            {MOCK_LEARNER_PROGRESS.recentActivity.map((a) => (
-                                <li
-                                    key={a}
-                                    className="text-xs text-slate-600 dark:text-zinc-400"
-                                >
-                                    · {a}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                    <div className="rounded-xl border border-slate-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900/50">
-                        <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
-                            Gợi ý tiếp theo
-                        </h3>
-                        <ul className="mt-3 space-y-2">
-                            {MOCK_LEARNER_PROGRESS.recommendedNext.map((r) => (
-                                <li key={r.label}>
-                                    <Link
-                                        href={r.href}
-                                        className="text-sm text-violet-600 hover:underline dark:text-indigo-400"
-                                    >
-                                        {r.actionLabel ? `${r.actionLabel}: ` : ""}
-                                        {r.label}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
                 </section>
 
                 <section className="mt-14">

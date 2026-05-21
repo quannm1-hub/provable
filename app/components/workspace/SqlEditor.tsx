@@ -1,4 +1,5 @@
 import { Play, RotateCcw, Send } from "lucide-react";
+import Button from "@/app/components/ui/Button";
 import { vi } from "@/lib/vi";
 
 type Props = {
@@ -11,6 +12,8 @@ type Props = {
     hintVisible: boolean;
     canShowHintButton: boolean;
     variant?: "learning" | "simulation";
+    submitDisabled?: boolean;
+    submitDisabledReason?: string;
 };
 
 export default function SqlEditor({
@@ -23,8 +26,14 @@ export default function SqlEditor({
     hintVisible,
     canShowHintButton,
     variant = "learning",
+    submitDisabled = false,
+    submitDisabledReason,
 }: Props) {
     const isSimulation = variant === "simulation";
+    const isEmpty = sql.trim().length === 0;
+    const runDisabled = isEmpty;
+    const submitBlocked = isEmpty || submitDisabled;
+
     return (
         <div className="flex h-full flex-col bg-white dark:bg-zinc-950">
             <div className="flex items-center justify-between border-b border-slate-200 px-4 py-2 dark:border-zinc-800">
@@ -33,38 +42,36 @@ export default function SqlEditor({
                 </span>
                 <div className="flex flex-wrap gap-2">
                     {canShowHintButton && !hintVisible && (
-                        <button
-                            type="button"
-                            onClick={onShowHint}
-                            className="rounded-md border border-slate-200 px-2 py-1 text-xs text-slate-600 hover:bg-slate-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-900"
-                        >
+                        <Button variant="ghost" onClick={onShowHint}>
                             {vi.sql.showHint}
-                        </button>
+                        </Button>
                     )}
-                    <button
-                        type="button"
-                        onClick={onReset}
-                        className="flex items-center gap-1 rounded-md border border-slate-200 px-2 py-1 text-xs text-slate-600 hover:bg-slate-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-900"
-                    >
+                    <Button variant="ghost" onClick={onReset}>
                         <RotateCcw className="h-3 w-3" />
                         {vi.sql.reset}
-                    </button>
-                    <button
-                        type="button"
+                    </Button>
+                    <Button
+                        variant="secondary"
                         onClick={onRun}
-                        className="flex items-center gap-1 rounded-md border border-slate-300 bg-slate-100 px-3 py-1 text-xs text-slate-800 hover:bg-slate-200 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                        disabled={runDisabled}
+                        title={runDisabled ? vi.sql.emptyEditor : undefined}
                     >
                         <Play className="h-3 w-3" />
                         {isSimulation ? vi.sql.runTrial : vi.sql.run}
-                    </button>
-                    <button
-                        type="button"
+                    </Button>
+                    <Button
+                        variant="primary"
                         onClick={onSubmit}
-                        className="flex items-center gap-1 rounded-md bg-violet-600 px-3 py-1 text-xs font-medium text-white hover:bg-violet-500 dark:bg-indigo-600 dark:hover:bg-indigo-500"
+                        disabled={submitBlocked}
+                        title={
+                            isEmpty
+                                ? vi.sql.emptyEditor
+                                : submitDisabledReason ?? undefined
+                        }
                     >
                         <Send className="h-3 w-3" />
                         {isSimulation ? vi.sql.submitTask : vi.sql.submit}
-                    </button>
+                    </Button>
                 </div>
             </div>
             <textarea

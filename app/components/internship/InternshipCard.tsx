@@ -120,7 +120,7 @@ export default function InternshipCard({
                 )}
                 <p className="mt-1 flex items-center gap-1 text-[10px] text-slate-400 dark:text-zinc-600">
                     <Building2 className="h-3 w-3" />
-                    Dataset: {program.dataset}
+                    {vi.data.datasetLabel}: {program.dataset}
                 </p>
 
                 <div className="mt-6 flex flex-col gap-2">

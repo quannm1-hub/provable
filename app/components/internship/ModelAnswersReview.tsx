@@ -24,7 +24,7 @@ export default function ModelAnswersReview({ records, onBack }: Props) {
                 Xem lại đáp án mẫu
             </h1>
             <p className="mt-2 text-sm text-slate-500 dark:text-zinc-500">
-                Đối chiếu truy vấn đã nộp với đáp án mẫu NovaTech.
+                Đối chiếu truy vấn đã nộp với đáp án mẫu Cốc Cốc.
             </p>
             <div className="mt-8 space-y-6">
                 {records.map((r) => (

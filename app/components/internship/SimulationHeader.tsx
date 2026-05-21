@@ -26,7 +26,7 @@ export default function SimulationHeader({
     completedTasks,
     totalTasks,
     onBack,
-    companyId = "novatech",
+    companyId = "coccoc",
     taskId,
     activeTab,
     sqlInput,
@@ -40,7 +40,7 @@ export default function SimulationHeader({
                   from: "simulation",
                   task: taskId,
                   internshipId: p.id,
-                  programHref: "/internships/novatech",
+                  programHref: "/internships/coccoc",
                   ...(activeTab ? { activeTab } : {}),
               })
             : `/companies/${companyId}`;
@@ -50,7 +50,7 @@ export default function SimulationHeader({
             saveSimulationResume({
                 from: "simulation",
                 internshipId: p.id,
-                programHref: "/internships/novatech",
+                programHref: "/internships/coccoc",
                 taskId,
                 activeTab,
                 sqlInput,

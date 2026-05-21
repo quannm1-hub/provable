@@ -5,7 +5,6 @@ import { cloneEmployees } from "@/lib/employees";
 import {
     appendCoachTurn,
     coachMsg,
-    resolveQuickAnswerSelection,
     stripUnresolvedQuickAnswers,
     type ChatMessage,
     type QuickReply,
@@ -43,6 +42,7 @@ import {
     type InternshipReturnContext,
 } from "@/lib/skill-navigation";
 import type { SimulationTab } from "@/lib/simulation-panel";
+import { isQuickAnswerSelectable, trySelectQuickAnswer } from "@/lib/chat-actions";
 import type { HighlightTarget } from "@/lib/simulation-panel";
 import { normalizeSql } from "@/lib/sql-normalize";
 import { runSql } from "@/lib/sql-runner";
@@ -78,7 +78,7 @@ function mentorMsg(content: string, opts?: { type?: ChatMessage["type"] }) {
 function makeReturnContext(task: (typeof internshipTasks)[0]): InternshipReturnContext {
     return {
         from: "internship",
-        internshipId: "novatech-data-ops",
+        internshipId: "coccoc-data-ops",
         taskId: task.id,
         taskTitle: task.title,
     };
@@ -260,6 +260,16 @@ export default function InternshipSimulation({
     }
 
     function handleRun() {
+        if (!sql.trim()) {
+            setMessages((prev) =>
+                appendCoachTurn(
+                    prev,
+                    [mentorMsg(vi.sqlRunner.enterQuery, { type: "feedback" })],
+                    optionsForSubStep(),
+                ),
+            );
+            return;
+        }
         const result = runSql(sql, employees);
         setRunResult(result);
         setSubmitOk(null);
@@ -455,7 +465,8 @@ export default function InternshipSimulation({
     function pickQuickReply(messageId: string, option: QuickReply) {
         if (isTyping) return;
         const { action, label, uiAction } = option;
-        setMessages((prev) => resolveQuickAnswerSelection(prev, messageId, label));
+        if (!isQuickAnswerSelectable(messages, messageId)) return;
+        setMessages((prev) => trySelectQuickAnswer(prev, messageId, label));
 
         if (uiAction && !applyPanelUi(uiAction, modelUnlocked)) {
             setMessages((prev) =>
@@ -524,7 +535,7 @@ export default function InternshipSimulation({
                     prev,
                     [
                         mentorMsg(
-                            "Tốt. Hãy đọc lại yêu cầu đầu ra trong tab Brief, sau đó viết SQL ở khung bên trên. Khi xong, bấm **Chạy thử**.",
+                            "Tốt. Hãy đọc lại yêu cầu đầu ra trong tab Tổng quan task, sau đó viết SQL ở khung bên trên. Khi xong, bấm **Chạy thử**.",
                         ),
                     ],
                     optionsForSubStep(),
@@ -565,7 +576,7 @@ export default function InternshipSimulation({
             respond(
                 () => [
                     mentorMsg(
-                        "Các kỹ năng liên quan nằm trong tab Brief — bạn có thể **Ôn lại** hoặc **Học nhanh** từng phần.",
+                        "Các kỹ năng liên quan nằm trong tab Tổng quan task — bạn có thể **Ôn lại** hoặc **Học nhanh** từng phần.",
                     ),
                 ],
                 optionsForSubStep(),
@@ -677,7 +688,7 @@ export default function InternshipSimulation({
                         isTyping={isTyping}
                         onQuickReply={pickQuickReply}
                         mode="simulation"
-                        avatarInitials="NT"
+                        avatarInitials="CC"
                         coachName={vi.internship.mentorName}
                         coachSubtitle={vi.internship.mentorSubtitle}
                     />

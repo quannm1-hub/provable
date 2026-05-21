@@ -34,7 +34,7 @@ export default function InternshipProgramDetail({ onBack, onStart }: Props) {
     const [mapOpen, setMapOpen] = useState(false);
     const timeline = getTaskTimeline();
     const p = NOVATECH_PROGRAM;
-    const programSkills = getProgramSkillSummaries("novatech-data-ops");
+    const programSkills = getProgramSkillSummaries("coccoc-data-ops");
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-zinc-950">
@@ -60,7 +60,7 @@ export default function InternshipProgramDetail({ onBack, onStart }: Props) {
                             </div>
                             <div>
                                 <Link
-                                    href="/companies/novatech"
+                                    href="/companies/coccoc"
                                     className="text-sm text-slate-500 hover:text-violet-600 hover:underline dark:text-zinc-500 dark:hover:text-indigo-400"
                                 >
                                     {p.company}
@@ -126,7 +126,9 @@ export default function InternshipProgramDetail({ onBack, onStart }: Props) {
                                 </dd>
                             </div>
                             <div>
-                                <dt className="text-slate-500 dark:text-zinc-500">Dataset</dt>
+                                <dt className="text-slate-500 dark:text-zinc-500">
+                                    {vi.data.datasetLabel}
+                                </dt>
                                 <dd className="font-mono text-xs text-slate-800 dark:text-zinc-200">
                                     {p.dataset}
                                 </dd>
