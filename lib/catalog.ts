@@ -289,7 +289,7 @@ export const INTERNSHIP_PROGRAMS: InternshipProgram[] = [
         initials: "CC",
         role: "Data Engineering Intern",
         description:
-            "Upload bài làm assessment và xem hệ thống chấm lỗi format, similarity, README, deadline, khả năng chạy, chất lượng giải thích và LLM review.",
+            "Làm 3 task SQL trên repo starter (fork GitHub), đóng gói bài nộp và xem review pipeline: format, similarity, README, code run, LLM review.",
         dataset: "Submission package",
         skills: [
             "Data Engineering",
@@ -314,10 +314,9 @@ export const INTERNSHIP_PROGRAMS: InternshipProgram[] = [
         dualInterviewCta: true,
         simulationCtaLabel: "Bắt đầu chấm thử",
         previewTasks: [
-            "Upload .zip / .md package",
-            "Pre-check format & README",
-            "Similarity & code run",
-            "LLM reviewer decision",
+            "Fork repo starter · task1–3.sql",
+            "Upload .zip package",
+            "Review pipeline & LLM decision",
         ],
     },
     {

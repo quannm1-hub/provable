@@ -145,28 +145,6 @@ export default function CompanyProfilePage({
                                 </span>
                             </div>
                         </div>
-                        <div className="flex shrink-0 flex-col gap-2 sm:min-w-[200px]">
-                            {company.status === "available" && heroHref ? (
-                                <Link
-                                    href={heroHref}
-                                    className="flex items-center justify-center gap-2 rounded-lg bg-emerald-600 py-2.5 text-sm font-medium text-white hover:bg-emerald-500 dark:bg-emerald-700"
-                                >
-                                    <Play className="h-4 w-4" />
-                                    Bắt đầu mô phỏng
-                                </Link>
-                            ) : (
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        const p = programs[0];
-                                        if (p) setProgramPreview(p);
-                                    }}
-                                    className="rounded-lg bg-violet-600 py-2.5 text-sm font-medium text-white hover:bg-violet-500 dark:bg-indigo-600"
-                                >
-                                    Xem trước chương trình
-                                </button>
-                            )}
-                        </div>
                     </div>
                     <p className="mt-6 max-w-3xl text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
                         {company.shortDescription}

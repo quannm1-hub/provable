@@ -2,30 +2,29 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronDown, ExternalLink } from "lucide-react";
 import AssessmentPageLayout from "@/app/components/assessment/AssessmentPageLayout";
-import EvaluationPipeline, {
-    checkStatusToPipeline,
-    type PipelineStep,
-} from "@/app/components/assessment/EvaluationPipeline";
-import EvaluationResultCard from "@/app/components/assessment/EvaluationResultCard";
-import InlineLLMReview from "@/app/components/assessment/InlineLLMReview";
+import EvaluationPipeline from "@/app/components/assessment/EvaluationPipeline";
 import ThemeToggle from "@/app/components/layout/ThemeToggle";
 import Button from "@/app/components/ui/Button";
 import {
     evaluateAssessmentSubmission,
     readSubmissionText,
-    type AssessmentCheck,
     type AssessmentDecision,
     type AssessmentEvaluationResult,
 } from "@/lib/assessment-evaluator";
+import { buildPipelineSteps } from "@/lib/assessment-pipeline-ui";
 import {
     COCCOC_DE_ACCEPTED_FORMATS,
     COCCOC_DE_ASSESSMENT_PROGRAM,
+    COCCOC_DE_ASSIGNMENT,
     COCCOC_DE_EXPECTED_PACKAGE,
+    COCCOC_DE_GITHUB_URL,
     COCCOC_DE_PASS_CRITERIA,
     COCCOC_DE_TASK,
 } from "@/lib/coccoc-de-assessment";
+import CoccocDeWorkspaceTaskSidebar from "@/app/components/internship/CoccocDeWorkspaceTaskSidebar";
+import ShopifyAssessmentReviewResults from "@/app/components/internship/ShopifyAssessmentReviewResults";
 import AssessmentSubmissionWorkspace, {
     type SubmissionMeta,
 } from "./AssessmentSubmissionWorkspace";
@@ -40,99 +39,13 @@ type Props = {
     onBackToProgram: () => void;
 };
 
-const FULL_PIPELINE_LABELS: { id: string; label: string }[] = [
-    { id: "format", label: "Kiểm tra file và format" },
-    { id: "deadline", label: "Kiểm tra deadline" },
-    { id: "readme", label: "Kiểm tra README / explanation" },
-    { id: "placeholder", label: "Kiểm tra nội dung rỗng / placeholder" },
-    { id: "similarity", label: "Kiểm tra similarity / chống sao chép" },
-    { id: "template_copy", label: "Copy template nguyên bản" },
-    { id: "code_run", label: "Kiểm tra khả năng chạy" },
-    { id: "spell_check", label: "Spell check" },
-    { id: "word_count", label: "Word count" },
-    { id: "ai_spam", label: "AI-generated obvious spam" },
-    { id: "llm", label: "LLM model review" },
-    { id: "result", label: "Tổng hợp kết quả" },
-];
-
-function buildPipelineSteps(
-    evaluation: AssessmentEvaluationResult | null,
-    running: boolean,
-    full: boolean,
-): PipelineStep[] {
-    const labels = full
-        ? FULL_PIPELINE_LABELS
-        : FULL_PIPELINE_LABELS.filter((s) =>
-              ["format", "deadline", "readme", "word_count", "result"].includes(s.id),
-          );
-
-    if (!evaluation && !running) {
-        return labels.map((s) => ({
-            id: s.id,
-            label: s.label,
-            status: "pending" as const,
-        }));
-    }
-
-    const checkMap = Object.fromEntries(evaluation?.checks.map((c) => [c.id, c]) ?? []);
-
-    return labels.map((s) => {
-        if (s.id === "llm") {
-            if (running) return { ...s, status: "running" as const, message: "Đang tổng hợp…" };
-            if (evaluation && !evaluation.preCheckOnly)
-                return {
-                    ...s,
-                    status: "passed" as const,
-                    message: evaluation.llmReview.summary.slice(0, 120),
-                };
-            return { ...s, status: "pending" as const };
-        }
-        if (s.id === "result") {
-            if (running) return { ...s, status: "running" as const };
-            if (evaluation)
-                return {
-                    ...s,
-                    status:
-                        evaluation.decision === "Reject"
-                            ? ("failed" as const)
-                            : evaluation.decision === "Needs Review"
-                              ? ("warning" as const)
-                              : ("passed" as const),
-                    message: `${evaluation.overallScore}% · ${evaluation.decision}`,
-                    score: evaluation.overallScore,
-                };
-            return { ...s, status: "pending" as const };
-        }
-        const check: AssessmentCheck | undefined =
-            checkMap[s.id] ??
-            (s.id === "similarity" ? checkMap.similarity : undefined) ??
-            (s.id === "readme" ? checkMap.readme : undefined);
-
-        if (!check) {
-            if (s.id === "similarity" && full) {
-                const tpl = checkMap.template_copy;
-                if (tpl && running)
-                    return { ...s, status: "running" as const, message: "Đang so khớp…" };
-            }
-            return {
-                ...s,
-                status: running ? ("running" as const) : ("pending" as const),
-            };
-        }
-        return {
-            id: s.id,
-            label: s.label,
-            status: checkStatusToPipeline(check.status, running),
-            message: check.message,
-            score: check.score,
-        };
-    });
-}
+type Screen = "workspace" | "results";
 
 export default function ShopifyAssessmentReviewSimulation({
     onComplete,
     onBackToProgram,
 }: Props) {
+    const [screen, setScreen] = useState<Screen>("workspace");
     const [submission, setSubmission] = useState<SubmissionMeta | null>(null);
     const [simulateLate, setSimulateLate] = useState(false);
     const [evaluation, setEvaluation] = useState<AssessmentEvaluationResult | null>(null);
@@ -185,6 +98,7 @@ export default function ShopifyAssessmentReviewSimulation({
         });
         setEvaluation(result);
         setEvaluating(false);
+        setScreen("results");
     }
 
     function handleReupload() {
@@ -192,18 +106,49 @@ export default function ShopifyAssessmentReviewSimulation({
         setEvaluation(null);
         setMode("none");
         setContentCache("");
+        setScreen("workspace");
     }
 
-    const pipelineSteps = buildPipelineSteps(
-        evaluation,
-        running,
-        mode === "full",
-    );
+    function handleBackToWorkspace() {
+        setScreen("workspace");
+    }
 
-    const showFullResult = evaluation && mode === "full" && !evaluation.preCheckOnly;
+    if (
+        screen === "results" &&
+        evaluation &&
+        submission &&
+        mode === "full" &&
+        !evaluation.preCheckOnly
+    ) {
+        return (
+            <ShopifyAssessmentReviewResults
+                evaluation={evaluation}
+                fileName={submission.file.name}
+                uploadedAt={submission.uploadedAt}
+                onBackToWorkspace={handleBackToWorkspace}
+                onBackToProgram={onBackToProgram}
+                onReupload={handleReupload}
+                onComplete={() =>
+                    onComplete({
+                        score: evaluation.overallScore,
+                        decision: evaluation.decision,
+                        fileName: submission.file.name,
+                        evaluation,
+                    })
+                }
+            />
+        );
+    }
+
+    const pipelineSteps = buildPipelineSteps(evaluation, running, mode === "full");
+    const hasFullResult = evaluation && mode === "full" && !evaluation.preCheckOnly;
+    const showPrecheckPipeline =
+        (running || evaluation) && screen === "workspace" && mode === "precheck";
 
     return (
         <AssessmentPageLayout
+            wide
+            sidebar={<CoccocDeWorkspaceTaskSidebar />}
             header={
                 <div className="flex h-14 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 dark:border-zinc-800 dark:bg-zinc-950">
                     <div className="flex min-w-0 items-center gap-2">
@@ -216,150 +161,133 @@ export default function ShopifyAssessmentReviewSimulation({
                             Quay lại chương trình
                         </button>
                         <div className="min-w-0">
-                            <p className="truncate text-xs font-semibold">
+                            <p className="truncate text-xs font-semibold">{p.title}</p>
+                            <p className="text-[10px] text-slate-500">
                                 <Link href="/companies/coccoc" className="text-emerald-600">
                                     {p.company}
                                 </Link>{" "}
-                                · {p.title}
+                                · {p.role}
                             </p>
-                            <p className="text-[10px] text-slate-500">{p.role} · Practice only</p>
                         </div>
                     </div>
                     <ThemeToggle compact />
                 </div>
             }
-            footer={
-                showFullResult ? (
-                    <div className="flex flex-wrap gap-2">
-                        <Button variant="ghost" size="sm" onClick={handleReupload}>
-                            Upload lại
-                        </Button>
-                        <Button variant="secondary" size="sm" onClick={onBackToProgram}>
-                            Quay về chương trình
-                        </Button>
-                        {(evaluation.decision === "Strong Pass" ||
-                            evaluation.decision === "Pass") && (
-                            <Button
-                                variant="primary"
-                                size="sm"
-                                onClick={() =>
-                                    onComplete({
-                                        score: evaluation.overallScore,
-                                        decision: evaluation.decision,
-                                        fileName: submission!.file.name,
-                                        evaluation,
-                                    })
-                                }
-                            >
-                                Lưu vào bài nộp
-                            </Button>
-                        )}
-                    </div>
-                ) : undefined
-            }
         >
-            <section className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900/50">
-                <h2 className="text-base font-bold">Brief</h2>
-                <p className="mt-2 text-sm text-slate-600">{COCCOC_DE_TASK.scenario}</p>
-                <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                    <div>
-                        <p className="text-[10px] font-semibold uppercase text-slate-500">
-                            Package mong đợi
-                        </p>
-                        <ul className="mt-1 list-inside list-disc text-xs">
-                            {COCCOC_DE_EXPECTED_PACKAGE.map((x) => (
-                                <li key={x}>{x}</li>
-                            ))}
-                        </ul>
+            <div className="space-y-4">
+                <section className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900/50 sm:p-5">
+                    <p className="text-[11px] font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
+                        Task 1
+                    </p>
+                    <h2 className="mt-1 text-lg font-bold text-slate-900 dark:text-white">
+                        sql/task1.sql
+                    </h2>
+                    <p className="mt-2 text-sm text-slate-600 dark:text-zinc-400">
+                        {COCCOC_DE_ASSIGNMENT.intro}
+                    </p>
+                    <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
+                        <a
+                            href={COCCOC_DE_GITHUB_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 font-medium text-emerald-600 hover:underline dark:text-emerald-400"
+                        >
+                            <ExternalLink className="h-4 w-4" />
+                            Repo starter
+                        </a>
+                        <span className="text-slate-300 dark:text-zinc-600">·</span>
+                        <code className="rounded bg-slate-100 px-2 py-0.5 text-xs dark:bg-zinc-800">
+                            sql/task1.sql
+                        </code>
                     </div>
-                    <div>
-                        <p className="text-[10px] font-semibold uppercase text-slate-500">
-                            Format chấp nhận
-                        </p>
-                        <ul className="mt-1 text-xs">
-                            {COCCOC_DE_ACCEPTED_FORMATS.map((f) => (
-                                <li key={f.ext}>
-                                    {f.ext} — {f.note}
-                                </li>
-                            ))}
-                        </ul>
+
+                    <details className="mt-4 rounded-lg border border-slate-100 dark:border-zinc-800">
+                        <summary className="flex cursor-pointer list-none items-center justify-between px-3 py-2 text-xs font-medium text-slate-600 [&::-webkit-details-marker]:hidden dark:text-zinc-400">
+                            Hướng dẫn nộp & tiêu chí chấm
+                            <ChevronDown className="h-4 w-4 shrink-0 text-slate-400" />
+                        </summary>
+                        <div className="space-y-3 border-t border-slate-100 px-3 py-3 text-xs text-slate-600 dark:border-zinc-800 dark:text-zinc-400">
+                            <p>{COCCOC_DE_TASK.scenario}</p>
+                            <p>
+                                <span className="font-medium text-slate-700 dark:text-zinc-300">
+                                    Package:
+                                </span>{" "}
+                                {COCCOC_DE_EXPECTED_PACKAGE.slice(0, 3).join(" · ")}…
+                            </p>
+                            <p>
+                                <span className="font-medium text-slate-700 dark:text-zinc-300">
+                                    Format:
+                                </span>{" "}
+                                {COCCOC_DE_ACCEPTED_FORMATS.map((f) => f.ext).join(", ")}
+                            </p>
+                            <ul className="list-inside list-disc space-y-0.5">
+                                {COCCOC_DE_PASS_CRITERIA.slice(0, 4).map((x) => (
+                                    <li key={x}>{x}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </details>
+                </section>
+
+                <section className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900/50 sm:p-5">
+                    <h3 className="text-sm font-bold">Nộp bài</h3>
+                    <p className="mt-1 text-xs text-slate-500">
+                        Pre-check trước, sau đó <strong>Chấm bài</strong> để xem kết quả.
+                    </p>
+                    <div className="mt-3">
+                        <AssessmentSubmissionWorkspace
+                            embedded
+                            file={submission?.file ?? null}
+                            uploadedAt={submission?.uploadedAt ?? null}
+                            simulateLate={simulateLate}
+                            onSimulateLate={setSimulateLate}
+                            onFile={(meta) => {
+                                setSubmission(meta);
+                                setEvaluation(null);
+                                setMode("none");
+                                setScreen("workspace");
+                                if (meta) void loadContent(meta.file);
+                            }}
+                            evaluation={null}
+                            evaluating={evaluating}
+                            preChecking={preChecking}
+                            onPreCheck={() => void runPreCheck()}
+                            onGrade={() => void runGrade()}
+                        />
                     </div>
-                </div>
-                <p className="mt-3 text-[10px] font-semibold uppercase text-slate-500">
-                    Tiêu chí chấm
-                </p>
-                <ul className="mt-1 list-inside list-disc text-xs text-slate-600">
-                    {COCCOC_DE_PASS_CRITERIA.map((x) => (
-                        <li key={x}>{x}</li>
-                    ))}
-                </ul>
-            </section>
+                </section>
 
-            <section className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900/50">
-                <h2 className="text-base font-bold">Nộp bài làm</h2>
-                <p className="mt-1 text-xs text-slate-500">
-                    Bạn có thể chạy pre-check để kiểm tra format, README và deadline trước khi
-                    chấm toàn bộ bài.
-                </p>
-                <AssessmentSubmissionWorkspace
-                    embedded
-                    file={submission?.file ?? null}
-                    uploadedAt={submission?.uploadedAt ?? null}
-                    simulateLate={simulateLate}
-                    onSimulateLate={setSimulateLate}
-                    onFile={(meta) => {
-                        setSubmission(meta);
-                        setEvaluation(null);
-                        setMode("none");
-                        if (meta) void loadContent(meta.file);
-                    }}
-                    evaluation={null}
-                    evaluating={evaluating}
-                    preChecking={preChecking}
-                    onPreCheck={() => void runPreCheck()}
-                    onGrade={() => void runGrade()}
-                />
-            </section>
+                {showPrecheckPipeline && (
+                    <div ref={processRef}>
+                        <p className="mb-2 text-xs font-medium text-slate-500">
+                            Pre-check
+                        </p>
+                        <EvaluationPipeline steps={pipelineSteps} />
+                    </div>
+                )}
 
-            {(running || evaluation) && (
-                <div ref={processRef}>
-                    <EvaluationPipeline steps={pipelineSteps} />
-                </div>
-            )}
+                {evaluating && (
+                    <p className="text-center text-sm text-slate-500">
+                        Đang chấm bài…
+                    </p>
+                )}
 
-            {showFullResult && evaluation && (
-                <>
-                    <EvaluationResultCard
-                        score={evaluation.overallScore}
-                        decision={evaluation.decision}
-                        riskFlags={evaluation.riskFlags}
-                        summary={evaluation.llmReview.summary}
-                    />
-                    <InlineLLMReview
-                        review={evaluation.llmReview}
-                        riskFlags={evaluation.riskFlags}
-                    />
-                    {evaluation.decision !== "Strong Pass" &&
-                        evaluation.decision !== "Pass" && (
-                            <section className="rounded-2xl border border-violet-200 bg-violet-50/40 p-4 dark:border-indigo-900/50">
-                                <h3 className="text-sm font-semibold">Khuyến nghị cải thiện</h3>
-                                <ul className="mt-2 list-inside list-disc text-xs text-violet-800 dark:text-indigo-300">
-                                    {evaluation.llmReview.recommendations.map((r) => (
-                                        <li key={r}>{r}</li>
-                                    ))}
-                                </ul>
-                                <Button
-                                    variant="secondary"
-                                    size="sm"
-                                    className="mt-3"
-                                    onClick={handleReupload}
-                                >
-                                    Xem cách cải thiện — Upload lại
-                                </Button>
-                            </section>
-                        )}
-                </>
-            )}
+                {hasFullResult && screen === "workspace" && (
+                    <section className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-4 text-center dark:border-emerald-900/50 dark:bg-emerald-950/30">
+                        <p className="text-sm text-slate-700 dark:text-zinc-300">
+                            Điểm {evaluation.overallScore}% · {evaluation.decision}
+                        </p>
+                        <Button
+                            variant="primary"
+                            size="sm"
+                            className="mt-3"
+                            onClick={() => setScreen("results")}
+                        >
+                            Xem kết quả
+                        </Button>
+                    </section>
+                )}
+            </div>
         </AssessmentPageLayout>
     );
 }
